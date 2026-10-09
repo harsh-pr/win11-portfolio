@@ -1,0 +1,657 @@
+/* ==========================================================================
+   Windows 11 File Explorer - Screenshot 1 Frame with Screenshot 2 Details List
+   ========================================================================== */
+
+.explorer-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #191919;
+  color: var(--text-primary);
+  user-select: none;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  overflow: hidden;
+}
+
+/* ── 1. Nav & Address Toolbar (Screenshot 1) ── */
+.exp-top-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: #202020;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  flex-shrink: 0;
+}
+
+.exp-nav-btns {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.exp-nav-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: var(--radius-button);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  font-size: 14px;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  transition: background var(--dur-fast), color var(--dur-fast);
+}
+
+.exp-nav-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+}
+
+.exp-nav-btn:disabled {
+  opacity: 0.25;
+  cursor: default;
+}
+
+/* Breadcrumb Address Bar */
+.exp-address-bar {
+  flex: 1;
+  height: 32px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-button);
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  gap: 8px;
+  font-size: 12.5px;
+  overflow: hidden;
+}
+
+.exp-address-folder-icon {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.exp-breadcrumb-path {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.exp-breadcrumb-item {
+  padding: 2px 6px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.exp-breadcrumb-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+.exp-breadcrumb-item.active {
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.exp-breadcrumb-sep {
+  color: var(--text-tertiary);
+  font-size: 10px;
+  user-select: none;
+}
+
+/* Search Box */
+.exp-search-box {
+  width: 220px;
+  height: 32px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-button);
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  gap: 8px;
+}
+
+.exp-search-box span {
+  font-size: 13px;
+  color: var(--text-tertiary);
+}
+
+.exp-search-box input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 12px;
+  color: #ffffff;
+}
+
+.exp-search-box input::placeholder {
+  color: var(--text-tertiary);
+}
+
+/* ── 2. Action Command Bar (Screenshot 1) ── */
+.exp-command-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: #1c1c1c;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  flex-shrink: 0;
+  overflow-x: auto;
+}
+
+.exp-cmd-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border-radius: var(--radius-button);
+  font-size: 12px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  transition: background var(--dur-fast), color var(--dur-fast);
+  white-space: nowrap;
+}
+
+.exp-cmd-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+}
+
+.exp-cmd-icon {
+  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* ── 3. Main Split View: Sidebar + Content ── */
+.exp-main {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* Left Sidebar (Screenshot 1) */
+.exp-sidebar {
+  width: 200px;
+  background: #181818;
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 10px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  overflow-y: auto;
+  flex-shrink: 0;
+}
+
+.exp-sidebar-section-title {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 8px 8px 4px;
+}
+
+.exp-sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: var(--radius-button);
+  font-size: 12.5px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: background var(--dur-fast), color var(--dur-fast);
+}
+
+.exp-sidebar-item:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: #ffffff;
+}
+
+.exp-sidebar-item.active {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.exp-sidebar-icon-img {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+  margin-right: 4px;
+  flex-shrink: 0;
+}
+
+/* ── 4. Content Area & Windows 11 Details Table (Screenshot 2 Match) ── */
+.exp-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #191919;
+  position: relative;
+}
+
+.exp-details-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: auto;
+  background: #191919;
+}
+
+.exp-details-inner {
+  display: flex;
+  flex-direction: column;
+  min-width: max-content;
+  width: 100%;
+}
+
+/* Header with thin vertical dividers matching Screenshot (Height increased to 36px) */
+.exp-details-header {
+  display: flex;
+  height: 36px;
+  background: #191919;
+  border-top: 1px solid #3a3a3a;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  user-select: none;
+  min-width: max-content;
+  width: 100%;
+}
+
+.exp-col-header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  color: #dedede;
+  font-size: 12.5px;
+  font-weight: 400;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.12s;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  height: 100%;
+}
+
+.exp-col-header:hover {
+  background: rgba(255, 255, 255, 0.04);
+  color: #ffffff;
+}
+
+/* Inset vertical divider lines between columns (matching Screenshot: #636363, top: 6px, bottom: 6px) */
+.exp-col-header::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 6px;
+  bottom: 6px;
+  width: 1px;
+  background: #636363;
+}
+
+.exp-col-header:last-child::after {
+  display: none;
+}
+
+/* Centered top sort caret (matching Screenshot) */
+.exp-sort-caret {
+  position: absolute;
+  top: 3px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+/* Standard Projects Folder Columns (Compact Name, tight Date/Type/Size, trailing spacer) */
+.exp-col-name {
+  width: 250px;
+  flex: none;
+  min-width: 180px;
+  padding-left: 36px;
+  padding-right: 14px;
+}
+
+.exp-col-date {
+  width: 170px;
+  flex: none;
+  padding: 0 10px;
+}
+
+.exp-col-type {
+  width: 135px;
+  flex: none;
+  padding: 0 10px;
+}
+
+.exp-col-size {
+  width: 85px;
+  flex: none;
+  padding: 0 10px;
+  text-align: right;
+  justify-content: flex-end;
+  padding-right: 14px;
+}
+
+.exp-col-spacer {
+  flex: 1;
+  min-width: 100px;
+  height: 100%;
+}
+
+/* Recycle Bin Columns (matching Screenshot) */
+.exp-col-orig-loc {
+  width: 235px;
+  min-width: 200px;
+  padding: 0 10px;
+}
+
+.exp-col-date-deleted {
+  width: 175px;
+  padding: 0 10px;
+}
+
+.exp-col-item-type {
+  width: 175px;
+  padding: 0 10px;
+}
+
+.exp-col-date-mod {
+  width: 175px;
+  padding: 0 10px;
+}
+
+.exp-details-body {
+  display: flex;
+  flex-direction: column;
+  padding: 2px 0 20px;
+  min-width: max-content;
+  width: 100%;
+}
+
+/* Details Row with compact Windows 11 density and rounded selection pill */
+.exp-details-row {
+  display: flex;
+  align-items: center;
+  height: 28px;
+  width: max-content;
+  padding: 0 6px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  margin: 1px 4px;
+  cursor: pointer;
+  user-select: none;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  transition: background 0.08s, border-color 0.08s;
+  font-size: 12.5px;
+}
+
+.exp-details-row:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* Rounded selection pill matching Screenshot */
+.exp-details-row.selected {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.exp-cell-name {
+  width: 250px;
+  flex: none;
+  min-width: 180px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: #ffffff;
+  padding-left: 4px;
+  font-size: 12.5px;
+}
+
+.exp-row-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  object-fit: contain;
+}
+
+.exp-cell-date {
+  width: 170px;
+  flex: none;
+  color: #8c8c8c;
+  font-size: 12.5px;
+  white-space: nowrap;
+  padding: 0 10px;
+}
+
+.exp-cell-type {
+  width: 135px;
+  flex: none;
+  color: #8c8c8c;
+  font-size: 12.5px;
+  white-space: nowrap;
+  padding: 0 10px;
+}
+
+.exp-cell-size {
+  width: 85px;
+  flex: none;
+  text-align: right;
+  color: #c0c0c0;
+  font-size: 12.5px;
+  padding-right: 14px;
+  white-space: nowrap;
+}
+
+.exp-cell-spacer {
+  flex: 1;
+  min-width: 100px;
+  height: 100%;
+}
+
+/* Rubber-band Marquee Selection Box inside File Explorer */
+.explorer-selection-box {
+  position: absolute;
+  border: 1px solid rgba(0, 120, 212, 0.85);
+  background: rgba(0, 120, 212, 0.22);
+  pointer-events: none;
+  z-index: 99;
+  border-radius: 2px;
+  display: none;
+}
+
+/* Recycle Bin Cells (matching Screenshot) */
+.exp-cell-orig-loc {
+  width: 235px;
+  min-width: 200px;
+  color: #c0c0c0;
+  font-size: 12.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0 10px;
+}
+
+.exp-cell-date-deleted {
+  width: 175px;
+  color: #c0c0c0;
+  font-size: 12.5px;
+  white-space: nowrap;
+  padding: 0 10px;
+}
+
+.exp-cell-item-type {
+  width: 175px;
+  color: #c0c0c0;
+  font-size: 12.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0 10px;
+}
+
+.exp-cell-date-mod {
+  width: 175px;
+  color: #c0c0c0;
+  font-size: 12.5px;
+  white-space: nowrap;
+  padding: 0 10px;
+}
+
+/* ── 5. Folder Grid (When at root view) ── */
+.win11-folder-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 20px 24px;
+}
+
+.win11-folder-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 108px;
+  padding: 10px 6px;
+  border-radius: 4px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s;
+  position: relative;
+}
+
+.win11-folder-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.win11-folder-item.selected {
+  background: rgba(255, 255, 255, 0.16) !important;
+  border: 1px solid rgba(255, 255, 255, 0.28) !important;
+  box-shadow: none !important;
+}
+
+.win11-folder-icon-wrap {
+  width: 82px;
+  height: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.win11-folder-icon-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+}
+
+.win11-folder-name {
+  font-size: 12px;
+  color: #ffffff;
+  text-align: center;
+  margin-top: 6px;
+  line-height: 1.3;
+  word-break: break-word;
+  max-width: 100px;
+  font-family: 'Segoe UI', Inter, system-ui, sans-serif;
+}
+
+/* ── 6. Status Bar (Screenshot 1) ── */
+.exp-status-bar {
+  height: 24px;
+  background: #191919;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 0 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11.5px;
+  color: #8c8c8c;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+/* ── 7. File Explorer Right-Click Context Menu (Fluent Acrylic) ── */
+.exp-context-menu {
+  position: fixed;
+  background: rgba(36, 36, 36, 0.94);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.05);
+  padding: 6px;
+  min-width: 200px;
+  z-index: 100000;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  user-select: none;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  animation: contextFadeIn 0.14s ease-out;
+}
+
+@keyframes contextFadeIn {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.exp-ctx-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 10px;
+  border-radius: 5px;
+  font-size: 12.5px;
+  color: #ededed;
+  cursor: pointer;
+  transition: background 0.1s ease;
+}
+
+.exp-ctx-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+}
+
+.exp-ctx-icon {
+  font-size: 14px;
+  width: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.exp-ctx-text {
+  flex: 1;
+}
+
+.exp-ctx-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  margin: 4px 6px;
+}

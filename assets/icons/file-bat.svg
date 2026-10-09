@@ -1,0 +1,29 @@
+<svg viewBox="0 0 64 76" width="64" height="76" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- White document sheet -->
+  <path d="M4 8C4 3.58172 7.58172 0 12 0H42L60 18V68C60 72.4183 56.4183 76 52 76H12C7.58172 76 4 72.4183 4 68V8Z" fill="#FFFFFF"/>
+  <path d="M42 0V14C42 16.2091 43.7909 18 46 18H60L42 0Z" fill="#D3D7DE"/>
+  
+  <!-- Windows 11 Batch Gears -->
+  <g transform="translate(18, 30)">
+    <!-- Gear 1 -->
+    <circle cx="12" cy="12" r="8" fill="#4B5563"/>
+    <circle cx="12" cy="12" r="3.5" fill="#FFFFFF"/>
+    <!-- Gear teeth 1 -->
+    <rect x="10.5" y="1" width="3" height="4" rx="1" fill="#4B5563"/>
+    <rect x="10.5" y="19" width="3" height="4" rx="1" fill="#4B5563"/>
+    <rect x="1" y="10.5" width="4" height="3" rx="1" fill="#4B5563"/>
+    <rect x="19" y="10.5" width="4" height="3" rx="1" fill="#4B5563"/>
+    <rect x="3.5" y="3.5" width="3" height="4" rx="1" transform="rotate(-45 3.5 3.5)" fill="#4B5563"/>
+    <rect x="18" y="18" width="3" height="4" rx="1" transform="rotate(-45 18 18)" fill="#4B5563"/>
+    <rect x="18" y="5.5" width="4" height="3" rx="1" transform="rotate(-45 18 5.5)" fill="#4B5563"/>
+    <rect x="5.5" y="18" width="4" height="3" rx="1" transform="rotate(-45 5.5 18)" fill="#4B5563"/>
+
+    <!-- Gear 2 (smaller, offset) -->
+    <circle cx="22" cy="22" r="6" fill="#6B7280"/>
+    <circle cx="22" cy="22" r="2.5" fill="#FFFFFF"/>
+    <rect x="20.5" y="14" width="3" height="3" rx="0.8" fill="#6B7280"/>
+    <rect x="20.5" y="27" width="3" height="3" rx="0.8" fill="#6B7280"/>
+    <rect x="14" y="20.5" width="3" height="3" rx="0.8" fill="#6B7280"/>
+    <rect x="27" y="20.5" width="3" height="3" rx="0.8" fill="#6B7280"/>
+  </g>
+</svg>

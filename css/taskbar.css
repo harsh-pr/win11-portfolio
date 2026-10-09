@@ -1,0 +1,1643 @@
+/* Windows 11 Taskbar */
+#taskbar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: var(--taskbar-height);
+  background: var(--surface-taskbar);
+  backdrop-filter: var(--blur-taskbar);
+  -webkit-backdrop-filter: var(--blur-taskbar);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 0 0 10px;
+  z-index: 50000;
+  box-shadow: var(--shadow-taskbar);
+  user-select: none;
+}
+
+/* Center Pinned & Running Apps Container */
+#taskbar-center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 100%;
+}
+
+.taskbar-item {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-button);
+  cursor: pointer;
+  transition: background var(--dur-fast), transform var(--dur-fast);
+}
+
+.taskbar-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.taskbar-item:active {
+  transform: scale(0.92);
+}
+
+.taskbar-item img,
+.taskbar-item svg {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  transition: transform var(--dur-fast);
+}
+
+.taskbar-item:hover img,
+.taskbar-item:hover svg {
+  transform: scale(1.08);
+}
+
+/* Start Button */
+#taskbar-start {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-button);
+}
+
+#taskbar-start svg rect {
+  transition: fill var(--dur-fast);
+}
+
+#taskbar-start:hover svg rect {
+  fill: var(--accent-light);
+}
+
+/* Windows 11 Taskbar Search Bar (Screenshot 5 Match) */
+#taskbar-search {
+  height: 32px;
+  width: 200px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 6px 0 12px;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  user-select: none;
+  margin: 0 4px;
+}
+
+#taskbar-search:hover {
+  background: rgba(255, 255, 255, 0.13);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.taskbar-search-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #c0c0c0;
+  font-size: 12px;
+  font-family: 'Segoe UI', Inter, system-ui, sans-serif;
+  letter-spacing: 0.2px;
+}
+
+.taskbar-search-left svg {
+  width: 13px;
+  height: 13px;
+  stroke: #c0c0c0;
+}
+
+.taskbar-search-doodle {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
+  font-size: 14px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+  user-select: none;
+}
+
+/* Running App Indicator Pill (Exact 1:1 match to Screenshot 5) */
+.taskbar-indicator {
+  position: absolute;
+  bottom: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 3px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.5);
+  transition: width 0.2s var(--ease-spring), background 0.2s ease;
+  width: 5px;
+  display: none;
+}
+
+.taskbar-item.running .taskbar-indicator {
+  display: block;
+}
+
+.taskbar-item.active {
+  background: rgba(255, 255, 255, 0.09);
+  border-radius: 6px;
+}
+
+.taskbar-item.active .taskbar-indicator {
+  display: block;
+  width: 16px;
+  background: #60cdff;
+  box-shadow: 0 0 6px rgba(96, 205, 255, 0.6);
+}
+
+.taskbar-item.launching {
+  filter: brightness(1.2);
+}
+
+/* Hover Thumbnail Preview */
+.taskbar-thumb-popup {
+  position: absolute;
+  bottom: calc(var(--taskbar-height) + 10px);
+  left: 50%;
+  transform: translateX(-50%) translateY(8px);
+  width: 220px;
+  background: var(--surface-startmenu);
+  backdrop-filter: var(--blur-popup);
+  border: 1px solid var(--border-window);
+  border-radius: var(--radius-popup);
+  box-shadow: var(--shadow-popup);
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.18s ease, transform 0.18s var(--ease-spring);
+  z-index: 60000;
+}
+
+.taskbar-item:hover .taskbar-thumb-popup {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}
+
+.thumb-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.thumb-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  color: var(--text-secondary);
+}
+
+.thumb-title img {
+  width: 14px;
+  height: 14px;
+}
+
+.thumb-close {
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  font-size: 11px;
+}
+
+.thumb-close:hover {
+  background: var(--danger);
+  color: white;
+}
+
+.thumb-preview-box {
+  width: 100%;
+  height: 115px;
+  border-radius: 4px;
+  background: var(--surface-window-sub);
+  border: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-tertiary);
+  font-size: 11px;
+  overflow: hidden;
+}
+
+/* ═══════════════════════════════════════════════════
+   SYSTEM TRAY AREA (RIGHT) - 1:1 MATCH TO SCREENSHOTS
+   ═══════════════════════════════════════════════════ */
+#taskbar-tray {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  gap: 2px;
+}
+
+.tray-button {
+  height: 38px;
+  padding: 0 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border-radius: var(--radius-button);
+  cursor: pointer;
+  transition: background var(--dur-fast);
+  color: var(--text-primary);
+  font-size: 12px;
+  user-select: none;
+}
+
+.tray-button:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.tray-button:active,
+.tray-button.active {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 6px;
+}
+
+/* 1. Overflow Button with Flip Animation on Click */
+#tray-overflow-btn {
+  width: 32px;
+  padding: 0;
+  position: relative;
+}
+
+.tray-overflow-chevron {
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+  display: block;
+}
+
+#tray-overflow-btn.active .tray-overflow-chevron {
+  transform: rotate(-180deg);
+}
+
+/* 2. Touch Keyboard Button */
+#tray-keyboard-btn {
+  width: 36px;
+  padding: 0;
+}
+
+/* 3. Language Switcher Button (Stacked ENG / IN) */
+#tray-lang-btn {
+  padding: 0 8px;
+}
+
+.tray-lang-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  line-height: 1.05;
+  font-family: 'Segoe UI', Inter, system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: #ffffff;
+}
+
+/* 4. Combined Quick Settings Pill (Wi-Fi + Volume + Battery - Screenshot 2) */
+#tray-quick-settings-btn {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 0 10px;
+  border-radius: 6px;
+}
+
+.tray-qs-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+}
+
+.tray-img-icon {
+  width: 19px;
+  height: 16px;
+  object-fit: contain;
+  display: block;
+  user-select: none;
+  pointer-events: none;
+}
+
+.tray-img-icon.wifi-img {
+  width: 20px;
+  height: 15px;
+}
+
+.tray-img-icon.volume-img {
+  width: 18px;
+  height: 16px;
+}
+
+.tray-img-icon.battery-img {
+  width: 25px;
+  height: 16px;
+}
+
+/* 5. Date & Time Button (Screenshot 1 & 5) */
+#tray-clock-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 0 8px;
+  line-height: 1.25;
+}
+
+#tray-time-text {
+  font-size: 11.5px;
+  font-weight: 500;
+  color: #ffffff;
+  font-family: 'Segoe UI', Inter, system-ui, sans-serif;
+}
+
+#tray-date-text {
+  font-size: 11px;
+  color: #ffffff;
+  font-family: 'Segoe UI', Inter, system-ui, sans-serif;
+}
+
+/* Show Desktop line at edge */
+#tray-peek {
+  width: 6px;
+  height: 100%;
+  margin-left: 2px;
+  border-left: 1px solid rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  transition: background var(--dur-fast);
+}
+
+#tray-peek:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* ═══════════════════════════════════════════════════
+   WINDOWS 11 SYSTEM TRAY FLYOUTS
+   ═══════════════════════════════════════════════════ */
+.tray-flyout-window {
+  position: fixed;
+  bottom: calc(var(--taskbar-height) + 12px);
+  background: rgba(32, 32, 32, 0.92);
+  backdrop-filter: blur(30px) saturate(160%);
+  -webkit-backdrop-filter: blur(30px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.11);
+  border-radius: 12px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.06);
+  z-index: 60000;
+  display: flex;
+  flex-direction: column;
+  visibility: hidden;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(12px) scale(0.97);
+  transition: opacity 0.2s ease, transform 0.22s cubic-bezier(0.1, 0.9, 0.2, 1), visibility 0.22s;
+  user-select: none;
+  font-family: 'Segoe UI', Inter, system-ui, sans-serif;
+}
+
+.tray-flyout-window.open {
+  visibility: visible;
+  pointer-events: auto;
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Screen Brightness Overlay */
+#screen-brightness-overlay {
+  position: fixed;
+  inset: 0;
+  background: black;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 45000;
+  transition: opacity 0.08s ease;
+}
+
+/* ── Flyout 1: Overflow Chevron Flyout (Screenshot 3) ── */
+#flyout-overflow {
+  right: 205px;
+  padding: 8px 12px;
+  border-radius: 10px;
+}
+
+.overflow-grid,
+.overflow-icons-tray {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.overflow-item,
+.overflow-icon-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+}
+
+.overflow-item:hover,
+.overflow-icon-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: scale(1.05);
+}
+
+.overflow-item:active,
+.overflow-icon-btn:active {
+  transform: scale(0.95);
+}
+
+.overflow-img-icon {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  display: block;
+  user-select: none;
+  pointer-events: none;
+  transition: transform 0.15s ease;
+}
+
+.overflow-item:hover .overflow-img-icon,
+.overflow-icon-btn:hover .overflow-img-icon {
+  transform: scale(1.12);
+}
+
+/* ── Flyout 2: Language Switcher Flyout (Screenshot 4) ── */
+#flyout-language {
+  right: 110px;
+  width: 320px;
+  padding: 12px 8px 8px 8px;
+}
+
+.lang-flyout-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px 10px 10px;
+}
+
+.lang-flyout-header span,
+.lang-header-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.lang-shortcut-hint,
+.lang-shortcut-badge {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  padding: 2px 7px;
+  font-size: 11px;
+  color: #d0d0d0;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.lang-items-list,
+.lang-options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.lang-item,
+.lang-item-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  transition: background 0.15s;
+}
+
+.lang-item:hover,
+.lang-item-row:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.lang-item.active,
+.lang-item-row.active {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.lang-item-bar,
+.lang-active-bar {
+  position: absolute;
+  left: 3px;
+  top: 10px;
+  bottom: 10px;
+  width: 3px;
+  border-radius: 2px;
+  background: #4cc2ff;
+  display: none;
+}
+
+.lang-item.active .lang-item-bar,
+.lang-item-row.active .lang-active-bar {
+  display: block;
+}
+
+.lang-code-tag,
+.lang-code {
+  font-size: 12px;
+  font-weight: 600;
+  color: #ffffff;
+  min-width: 28px;
+  padding-top: 1px;
+}
+
+.lang-text-col,
+.lang-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.lang-title,
+.lang-name {
+  font-size: 13px;
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.lang-sub {
+  font-size: 11px;
+  color: #a0a0a0;
+  margin-top: 2px;
+}
+
+.lang-flyout-footer,
+.lang-footer-link {
+  padding: 10px 10px 4px 10px;
+  font-size: 12.5px;
+  color: #ffffff;
+  cursor: pointer;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  margin-top: 8px;
+  transition: color 0.15s;
+}
+
+.lang-flyout-footer:hover,
+.lang-footer-link:hover {
+  color: #60cdff;
+}
+
+/* ── Flyout 3: Quick Settings Flyout (Command Palette) ── */
+#flyout-quick-settings {
+  right: 12px;
+  width: 360px;
+  padding: 16px;
+  transform: translateY(50px);
+  transition: transform 0.28s cubic-bezier(0.1, 0.9, 0.2, 1), opacity 0.22s ease, visibility 0.28s;
+}
+
+#flyout-quick-settings.open {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* Media Player Card matching Screenshot 2 */
+.qs-media-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 12px 14px;
+  margin-bottom: 14px;
+}
+
+.qs-media-header,
+.qs-media-app-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #cccccc;
+}
+
+.qs-media-app-icon {
+  width: 14px;
+  height: 14px;
+}
+
+.qs-media-body,
+.qs-media-main-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 8px;
+}
+
+.qs-media-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.qs-media-title {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.qs-media-sub,
+.qs-media-subtitle {
+  font-size: 11.5px;
+  color: #a0a0a0;
+}
+
+.qs-media-thumb {
+  width: 58px;
+  height: 36px;
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.qs-media-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.qs-media-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 26px;
+  margin-top: 8px;
+}
+
+.qs-media-btn {
+  background: none;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, transform 0.1s;
+}
+
+.qs-media-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: scale(1.1);
+}
+
+.qs-media-btn.play-btn,
+.qs-media-play {
+  font-size: 15px;
+}
+
+/* Quick Settings 3x2 Action Tiles */
+.qs-tiles-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.qs-tiles-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  flex: 1;
+}
+
+.qs-tile-wrapper,
+.qs-tile-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.qs-tile,
+.qs-tile-btn {
+  height: 44px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #ffffff;
+  transition: background 0.15s, color 0.15s;
+}
+
+.qs-tile:hover,
+.qs-tile-btn:hover {
+  background: rgba(255, 255, 255, 0.13);
+}
+
+.qs-tile.active,
+.qs-tile-btn.active {
+  background: #4cc2ff !important;
+  color: #000000 !important;
+  border-color: transparent !important;
+}
+
+.qs-tile.active svg,
+.qs-tile-btn.active svg,
+.qs-tile.active path,
+.qs-tile-btn.active path {
+  fill: #000000 !important;
+  stroke: #000000 !important;
+}
+
+.qs-tile-icon-area {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.qs-tile-img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  display: block;
+  user-select: none;
+  pointer-events: none;
+  filter: brightness(0) invert(1);
+  transition: filter 0.15s ease;
+}
+
+.qs-tile.active .qs-tile-img,
+.qs-tile-btn.active .qs-tile-img {
+  filter: brightness(0);
+}
+
+.qs-tile-chevron,
+.qs-tile-arrow {
+  width: 24px;
+  height: 24px;
+  margin-right: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-left: 1px solid rgba(255, 255, 255, 0.15);
+  font-size: 15px;
+}
+
+.qs-tile.active .qs-tile-chevron,
+.qs-tile-btn.active .qs-tile-arrow {
+  border-left-color: rgba(0, 0, 0, 0.25);
+  color: #000000;
+}
+
+.qs-tile-label {
+  font-size: 11.5px;
+  color: #d0d0d0;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.qs-carousel-col,
+.qs-pagination-dots {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  padding: 0 2px;
+}
+
+.qs-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.qs-dot.active {
+  background: #ffffff;
+}
+
+.qs-dot-caret,
+.qs-dot-arrow {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 9px;
+  margin-top: 2px;
+}
+
+/* Sliders Section */
+.qs-sliders-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.qs-slider-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.qs-slider-icon,
+.qs-slider-row svg {
+  color: #cccccc;
+  flex-shrink: 0;
+}
+
+.qs-slider-img {
+  width: 19px;
+  height: 19px;
+  object-fit: contain;
+  display: block;
+  flex-shrink: 0;
+  user-select: none;
+  pointer-events: none;
+}
+
+.win11-qs-slider,
+.qs-range-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  flex: 1;
+  height: 4px;
+  border-radius: 2px;
+  background: linear-gradient(
+    to right,
+    #4cc2ff 0%,
+    #4cc2ff var(--fill-pos, var(--fill-pct, 75%)),
+    rgba(255, 255, 255, 0.28) var(--fill-pos, var(--fill-pct, 75%)),
+    rgba(255, 255, 255, 0.28) 100%
+  );
+  outline: none;
+  cursor: pointer;
+}
+
+.win11-qs-slider::-webkit-slider-thumb,
+.qs-range-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #4cc2ff;
+  cursor: pointer;
+  border: 3px solid #202020;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+  box-sizing: border-box;
+  transition: transform 0.1s;
+}
+
+.win11-qs-slider::-webkit-slider-thumb:hover,
+.qs-range-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+}
+
+.win11-qs-slider::-moz-range-progress,
+.qs-range-slider::-moz-range-progress {
+  background-color: #4cc2ff;
+  height: 4px;
+  border-radius: 2px 0 0 2px;
+}
+
+.win11-qs-slider::-moz-range-track,
+.qs-range-slider::-moz-range-track {
+  background-color: rgba(255, 255, 255, 0.28);
+  height: 4px;
+  border-radius: 2px;
+}
+
+.win11-qs-slider::-moz-range-thumb,
+.qs-range-slider::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #4cc2ff;
+  cursor: pointer;
+  border: 3px solid #202020;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+  box-sizing: border-box;
+  transition: transform 0.1s;
+}
+
+.qs-audio-device-btn,
+.qs-device-arrow-btn,
+.qs-audio-device-spacer {
+  width: 36px;
+  height: 24px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.qs-audio-device-btn,
+.qs-device-arrow-btn {
+  background: none;
+  border: none;
+  color: #cccccc;
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 4px;
+  transition: background 0.15s, color 0.15s;
+}
+
+.qs-audio-device-spacer {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.qs-audio-device-img {
+  width: 24px;
+  height: 16px;
+  object-fit: contain;
+  display: block;
+  user-select: none;
+  pointer-events: none;
+}
+
+.qs-audio-device-btn:hover,
+.qs-device-arrow-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+/* Quick Settings Footer (Matching Screenshot 4) */
+.qs-footer-bar,
+.qs-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 12px;
+}
+
+.qs-footer-battery-img {
+  width: 25px;
+  height: 16px;
+  object-fit: contain;
+  display: block;
+  user-select: none;
+  pointer-events: none;
+}
+
+.qs-footer-battery,
+.qs-footer-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: #ffffff;
+  font-family: 'Segoe UI', Inter, system-ui, sans-serif;
+}
+
+.qs-footer-actions,
+.qs-footer-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.qs-settings-btn,
+.qs-footer-icon-btn {
+  background: none;
+  border: none;
+  color: #cccccc;
+  cursor: pointer;
+  border-radius: 4px;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.15s, background 0.15s;
+}
+
+.qs-settings-btn:hover,
+.qs-footer-icon-btn:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* ── Flyout 4: Notifications & Calendar Flyouts (Split Dual-Card Windows 11 Design) ── */
+#flyout-calendar-notifications {
+  position: fixed;
+  bottom: calc(var(--taskbar-height) + 12px);
+  right: 12px;
+  width: 360px;
+  max-height: calc(100vh - var(--taskbar-height) - 20px);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  padding: 0 !important;
+  z-index: 60000;
+  pointer-events: none;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
+  transform: translateX(70px);
+  opacity: 0;
+  visibility: hidden;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.28s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.35s;
+}
+
+#flyout-calendar-notifications::-webkit-scrollbar {
+  display: none;
+  width: 0;
+}
+
+#flyout-calendar-notifications.open {
+  transform: translateX(0);
+  opacity: 1;
+  visibility: visible;
+}
+
+/* 1. Notifications Panel Floating Card (SS 2 Matching Windows 11 Acrylic) */
+.notif-panel-card {
+  pointer-events: auto;
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: 340px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: rgba(30, 30, 30, 0.94);
+  backdrop-filter: blur(30px) saturate(160%);
+  -webkit-backdrop-filter: blur(30px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.06);
+  padding: 16px 16px 14px 16px;
+  margin-bottom: 0;
+  box-sizing: border-box;
+}
+
+.notif-panel-header {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.notif-panel-header span {
+  font-size: 14px;
+  font-weight: 600;
+  color: #ffffff;
+  letter-spacing: -0.2px;
+}
+
+.notif-focus-bell {
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 6px;
+  width: 32px;
+  height: 32px;
+  background: rgba(255, 255, 255, 0.04);
+  color: #cccccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.notif-focus-bell:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.28);
+  color: #ffffff;
+}
+
+.notif-clear-all {
+  font-size: 11.5px;
+  color: #60c1ff;
+  background: rgba(96, 193, 255, 0.08);
+  border: 1px solid rgba(96, 193, 255, 0.22);
+  cursor: pointer;
+  padding: 3px 9px;
+  border-radius: 4px;
+  margin-left: 8px;
+  font-weight: 500;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.notif-clear-all:hover {
+  background: rgba(96, 193, 255, 0.18);
+  border-color: rgba(96, 193, 255, 0.4);
+  color: #ffffff;
+}
+
+.notif-panel-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 2px 2px 4px 0;
+}
+
+.notif-panel-body::-webkit-scrollbar {
+  width: 4px;
+}
+
+.notif-panel-body::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.22);
+  border-radius: 4px;
+}
+
+.notif-panel-body::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.38);
+}
+
+.notif-empty-text {
+  color: #8c8c8c;
+  font-size: 13.5px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  flex: 1 1 auto;
+  min-height: 120px;
+  user-select: none;
+}
+
+@keyframes notifCardEnter {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes notifSwipeRight {
+  0% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(115%);
+    opacity: 0;
+  }
+}
+
+.notif-center-item {
+  flex-shrink: 0;
+  background: rgba(255, 255, 255, 0.055);
+  border: 1px solid rgba(255, 255, 255, 0.085);
+  border-radius: 8px;
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 100%;
+  box-sizing: border-box;
+  animation: notifCardEnter 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.notif-center-item.dismissing {
+  animation: notifSwipeRight 0.3s cubic-bezier(0.2, 0, 0, 1) forwards !important;
+  pointer-events: none;
+}
+
+.notif-center-item:hover {
+  background: rgba(255, 255, 255, 0.09);
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.notif-item-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11.5px;
+  color: var(--text-secondary);
+  margin-bottom: 2px;
+}
+
+.notif-item-app {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-weight: 500;
+  color: #cccccc;
+}
+
+.notif-item-appname {
+  font-size: 11.5px;
+}
+
+.notif-item-icon {
+  font-size: 13px;
+}
+
+.notif-item-time {
+  font-size: 11px;
+}
+
+.notif-item-dismiss {
+  background: transparent;
+  border: none;
+  color: #888888;
+  cursor: pointer;
+  font-size: 13px;
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: background 0.15s, color 0.15s;
+}
+
+.notif-item-dismiss:hover {
+  background: rgba(255, 255, 255, 0.16);
+  color: #ffffff;
+}
+
+.notif-item-title {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #ffffff;
+  line-height: 1.35;
+}
+
+.notif-item-msg {
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.85);
+  word-break: break-word;
+}
+
+/* 2. ALL FUNCTIONAL Calendar Floating Card */
+.calendar-card {
+  pointer-events: auto;
+  flex-shrink: 0;
+  background: rgba(30, 30, 30, 0.94);
+  backdrop-filter: blur(30px) saturate(160%);
+  -webkit-backdrop-filter: blur(30px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.06);
+  padding: 14px 16px 12px 16px;
+  box-sizing: border-box;
+}
+
+.cal-header-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.cal-clock-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.cal-time-digits {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.cal-time-large {
+  font-size: 26px;
+  font-weight: 600;
+  color: #ffffff;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.5px;
+}
+
+.cal-time-ampm {
+  font-size: 13px;
+  font-weight: 500;
+  color: #ffffff;
+}
+
+.cal-collapse-btn {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #cccccc;
+  cursor: pointer;
+  border-radius: 6px;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.cal-collapse-btn svg {
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cal-collapse-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.22);
+  color: #ffffff;
+}
+
+.cal-collapse-btn.collapsed svg {
+  transform: rotate(180deg);
+}
+
+.cal-date-text {
+  font-size: 13px;
+  color: #a0a0a0;
+  margin-top: 3px;
+}
+
+/* Collapsible Calendar Body */
+.cal-body-section {
+  transition: max-height 0.25s ease, opacity 0.2s ease;
+  overflow: hidden;
+  max-height: 420px;
+}
+
+.cal-body-section.collapsed {
+  max-height: 0;
+  opacity: 0;
+  margin-top: 0;
+}
+
+/* Month Navigation */
+.cal-month-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 14px;
+  margin-bottom: 12px;
+}
+
+.cal-month-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #ffffff;
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: 4px;
+  transition: background 0.15s;
+}
+
+.cal-month-title:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.cal-nav-arrows {
+  display: flex;
+  gap: 4px;
+}
+
+.cal-nav-btn {
+  width: 26px;
+  height: 26px;
+  background: none;
+  border: none;
+  color: #cccccc;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  transition: background 0.15s, color 0.15s;
+}
+
+.cal-nav-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+.cal-nav-btn:active {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* Weekdays Row */
+.cal-weekdays-row {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  font-size: 12px;
+  color: #a0a0a0;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+/* Days Grid matching Screenshot 5 & SS 2 */
+.cal-days-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  row-gap: 2px;
+}
+
+.cal-day-cell {
+  height: 33px;
+  width: 33px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  color: #ffffff;
+  cursor: pointer;
+  border-radius: 50%;
+  margin: 0 auto;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  user-select: none;
+  border: 1.5px solid transparent;
+}
+
+.cal-day-cell:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.cal-day-cell.other-month {
+  color: #585858;
+}
+
+/* Today: Solid Cyan Circle with Black Text matching Screenshot 5 & SS 2 */
+.cal-day-cell.today {
+  background: #4cc2ff !important;
+  color: #000000 !important;
+  font-weight: 600 !important;
+}
+
+.cal-day-cell.selected:not(.today) {
+  border-color: #4cc2ff;
+  color: #ffffff;
+}
+
+/* Focus Session Bar matching Screenshot 5 */
+.cal-focus-bar {
+  margin-top: 14px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.cal-focus-timer-ctrl {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 6px;
+  padding: 2px 6px;
+}
+
+.cal-focus-stepper {
+  width: 24px;
+  height: 24px;
+  background: none;
+  border: none;
+  color: #cccccc;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, color 0.15s;
+}
+
+.cal-focus-stepper:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+.cal-focus-duration {
+  font-size: 12px;
+  color: #ffffff;
+  display: flex;
+  gap: 4px;
+  align-items: baseline;
+  min-width: 48px;
+  justify-content: center;
+}
+
+.cal-focus-duration strong {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.cal-focus-launch-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  padding: 6px 16px;
+  color: #ffffff;
+  font-size: 12.5px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.cal-focus-launch-btn:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.cal-focus-launch-btn.active {
+  background: #4cc2ff;
+  color: #000000;
+  border-color: transparent;
+  font-weight: 600;
+}
+
+.cal-focus-launch-btn.active .focus-play-icon {
+  content: "⏹";
+}
+
+/* Responsive handling for windowed browser / short viewports */
+@media (max-height: 740px) {
+  #flyout-calendar-notifications {
+    max-height: calc(100vh - var(--taskbar-height) - 14px);
+    gap: 8px;
+  }
+  .notif-panel-card {
+    padding: 12px 14px 10px 14px;
+    max-height: 260px;
+  }
+  .notif-panel-header {
+    margin-bottom: 8px;
+  }
+  .notif-empty-text {
+    min-height: 80px;
+    font-size: 13px;
+  }
+  .calendar-card {
+    padding: 10px 14px 8px 14px;
+  }
+  .cal-time-large {
+    font-size: 22px;
+  }
+  .cal-day-cell {
+    height: 28px;
+    width: 28px;
+    font-size: 12px;
+  }
+  .cal-days-grid {
+    row-gap: 1px;
+  }
+  .cal-month-nav {
+    margin-top: 8px;
+    margin-bottom: 6px;
+  }
+  .cal-focus-bar {
+    margin-top: 8px;
+    padding-top: 6px;
+  }
+}
+
+@media (max-height: 600px) {
+  #flyout-calendar-notifications {
+    max-height: calc(100vh - var(--taskbar-height) - 10px);
+    gap: 6px;
+  }
+  .notif-panel-card {
+    max-height: 200px;
+  }
+  .cal-focus-bar {
+    display: none;
+  }
+}

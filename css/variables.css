@@ -1,0 +1,77 @@
+:root {
+  /* ── Wallpaper ─────────────────────────────── */
+  --wallpaper: url('../assets/wallpaper.jpg');
+
+  /* ── Core Colors ───────────────────────────── */
+  --accent:              #0078D4;       /* Windows blue */
+  --accent-light:        #2899F5;
+  --accent-dark:         #005A9E;
+  --accent-glow:         rgba(0, 120, 212, 0.35);
+  --danger:              #E81123;       /* Close button red */
+  --warning:             #F7630C;       /* Taskbar badge orange */
+  --success:             #107C41;
+
+  /* ── Surfaces ──────────────────────────────── */
+  --surface-taskbar:     rgba(32, 32, 32, 0.82);
+  --surface-window:      #202020;
+  --surface-window-alt:  #2b2b2b;      /* sidebar, panels */
+  --surface-window-sub:  #181818;
+  --surface-card:        rgba(255, 255, 255, 0.05);
+  --surface-hover:       rgba(255, 255, 255, 0.08);
+  --surface-active:      rgba(255, 255, 255, 0.12);
+  --surface-startmenu:   rgba(32, 32, 32, 0.94);
+  --surface-context:     rgba(40, 40, 40, 0.96);
+  --surface-tray:        rgba(36, 36, 36, 0.95);
+
+  /* ── Borders ───────────────────────────────── */
+  --border-subtle:       rgba(255, 255, 255, 0.08);
+  --border-window:       rgba(255, 255, 255, 0.12);
+  --border-window-focus: rgba(255, 255, 255, 0.18);
+  --border-focus:        rgba(0, 120, 212, 0.7);
+
+  /* ── Text ──────────────────────────────────── */
+  --text-primary:        #ffffff;
+  --text-secondary:      rgba(255, 255, 255, 0.72);
+  --text-tertiary:       rgba(255, 255, 255, 0.45);
+  --text-disabled:       rgba(255, 255, 255, 0.25);
+  --text-accent:         #60C1FF;
+
+  /* ── Shadows (Screenshot 5: Pure drop shadow without duplicate outline ring) ── */
+  --shadow-window:       0 14px 42px rgba(0, 0, 0, 0.6);
+  --shadow-window-focus: 0 18px 48px rgba(0, 0, 0, 0.7);
+  --shadow-popup:        0 16px 40px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.1);
+  --shadow-taskbar:      0 -2px 10px rgba(0, 0, 0, 0.35);
+
+  /* ── Blur / Mica / Acrylic ─────────────────── */
+  --blur-taskbar:        blur(24px) saturate(180%);
+  --blur-window:         blur(30px) saturate(160%);
+  --blur-popup:          blur(28px) saturate(180%);
+
+  /* ── Radii ──────────────────────────────────── */
+  --radius-window:       8px;
+  --radius-button:       4px;
+  --radius-card:         6px;
+  --radius-popup:        10px;
+  --radius-icon:         6px;
+  --radius-pill:         100px;
+
+  /* ── Spacing ─────────────────────────────────  */
+  --taskbar-height:      48px;
+  --titlebar-height:     34px;
+
+  /* ── Typography ─────────────────────────────── */
+  --font-ui:             'Segoe UI Variable', 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+  --font-mono:           'Cascadia Code', 'Consolas', 'Courier New', monospace;
+
+  /* ── Transitions & Easings ───────────────────  */
+  --ease-window:         cubic-bezier(0.1, 0.9, 0.2, 1);
+  --ease-spring:         cubic-bezier(0.34, 1.4, 0.64, 1);
+  --ease-out:            cubic-bezier(0, 0, 0.2, 1);
+  --ease-in-out:         cubic-bezier(0.4, 0, 0.2, 1);
+
+  --dur-fast:            120ms;
+  --dur-normal:          220ms;
+  --dur-slow:            380ms;
+  --dur-window-open:     240ms;
+  --dur-window-close:    180ms;
+}

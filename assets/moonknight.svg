@@ -1,0 +1,37 @@
+<svg viewBox="0 0 160 90" width="160" height="90" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="moonGlow" cx="65%" cy="35%" r="50%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.9"/>
+      <stop offset="40%" stop-color="#b0c4de" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#0a0e17" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f141d"/>
+      <stop offset="100%" stop-color="#05070a"/>
+    </linearGradient>
+    <linearGradient id="hoodGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f0f4f8"/>
+      <stop offset="60%" stop-color="#d0d8e2"/>
+      <stop offset="100%" stop-color="#8a95a5"/>
+    </linearGradient>
+  </defs>
+  <!-- Background -->
+  <rect width="160" height="90" fill="url(#bgGrad)"/>
+  <!-- Ambient Moon Glow -->
+  <circle cx="115" cy="35" r="45" fill="url(#moonGlow)"/>
+  <!-- Crescent Moon -->
+  <path d="M 120 12 A 26 26 0 1 0 140 54 A 22 22 0 1 1 120 12 Z" fill="#ffffff" opacity="0.95"/>
+  <!-- Silhouette & Hood of Moon Knight -->
+  <path d="M 55 90 L 60 62 C 60 52 68 40 82 36 C 96 32 108 40 114 50 C 118 57 122 68 126 90 Z" fill="url(#hoodGrad)"/>
+  <!-- Hood Shadow Inner -->
+  <path d="M 68 62 C 70 48 78 44 88 44 C 98 44 104 50 106 62 C 102 74 98 78 87 78 C 76 78 70 74 68 62 Z" fill="#151b24"/>
+  <!-- Mask Details -->
+  <path d="M 74 60 C 76 54 82 52 87 52 C 92 52 98 54 100 60 C 97 70 94 74 87 74 C 80 74 77 70 74 60 Z" fill="#cfd6df"/>
+  <!-- Glowing Eyes -->
+  <ellipse cx="81" cy="60" rx="3.5" ry="1.8" fill="#ffffff" transform="rotate(-5 81 60)"/>
+  <ellipse cx="93" cy="60" rx="3.5" ry="1.8" fill="#ffffff" transform="rotate(5 93 60)"/>
+  <circle cx="81" cy="60" r="4" fill="#aee2ff" opacity="0.6"/>
+  <circle cx="93" cy="60" r="4" fill="#aee2ff" opacity="0.6"/>
+  <!-- Crescent Crest on Forehead -->
+  <path d="M 84 46 A 4 4 0 1 0 90 49 A 3 3 0 1 1 84 46 Z" fill="#88929e"/>
+</svg>

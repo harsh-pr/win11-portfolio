@@ -1,0 +1,250 @@
+/* Windows 11 Start Menu */
+#start-menu {
+  position: fixed;
+  bottom: calc(var(--taskbar-height) + 12px);
+  left: 50%;
+  transform: translateX(-50%) translateY(20px) scale(0.96);
+  width: 580px;
+  max-width: 94vw;
+  height: 640px;
+  max-height: 85vh;
+  background: var(--surface-startmenu);
+  backdrop-filter: var(--blur-popup);
+  -webkit-backdrop-filter: var(--blur-popup);
+  border: 1px solid var(--border-window);
+  border-radius: var(--radius-popup);
+  box-shadow: var(--shadow-popup);
+  display: flex;
+  flex-direction: column;
+  z-index: 55000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.22s cubic-bezier(0.1, 0.9, 0.2, 1),
+              transform 0.26s var(--ease-spring);
+  overflow: hidden;
+}
+
+#start-menu.open {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0) scale(1);
+}
+
+/* Search Box at Top */
+.sm-search-container {
+  padding: 24px 28px 16px;
+}
+
+.sm-search-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid var(--border-subtle);
+  border-bottom: 2px solid var(--accent);
+  border-radius: var(--radius-pill);
+  padding: 9px 18px;
+  transition: background var(--dur-fast), border-color var(--dur-fast);
+}
+
+.sm-search-bar:focus-within {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: var(--accent);
+}
+
+.sm-search-bar svg {
+  color: var(--text-tertiary);
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.sm-search-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  font-size: 13.5px;
+}
+
+.sm-search-input::placeholder {
+  color: var(--text-tertiary);
+}
+
+/* Scrollable Inner Body */
+.sm-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 28px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.sm-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.sm-section-title {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.sm-all-apps-btn {
+  font-size: 12px;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 8px;
+  border-radius: var(--radius-button);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-subtle);
+  transition: background var(--dur-fast);
+}
+
+.sm-all-apps-btn:hover {
+  background: var(--surface-hover);
+}
+
+/* Pinned Grid */
+.sm-pinned-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 12px 6px;
+}
+
+.sm-app-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 4px;
+  border-radius: var(--radius-card);
+  cursor: pointer;
+  transition: background var(--dur-fast), transform var(--dur-fast);
+}
+
+.sm-app-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.sm-app-item:active {
+  transform: scale(0.94);
+}
+
+.sm-app-item img {
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+}
+
+.sm-app-item span {
+  font-size: 11.5px;
+  color: var(--text-primary);
+  text-align: center;
+  line-height: 1.2;
+}
+
+/* Recommended Section */
+.sm-recommended-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px 16px;
+}
+
+.sm-rec-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  border-radius: var(--radius-card);
+  cursor: pointer;
+  transition: background var(--dur-fast);
+}
+
+.sm-rec-card:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.sm-rec-card img {
+  width: 26px;
+  height: 26px;
+}
+
+.sm-rec-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sm-rec-title {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: #ffffff;
+}
+
+.sm-rec-time {
+  font-size: 11px;
+  color: var(--text-tertiary);
+}
+
+/* Bottom Footer Bar */
+.sm-footer {
+  height: 60px;
+  background: rgba(25, 25, 25, 0.8);
+  border-top: 1px solid var(--border-subtle);
+  padding: 0 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sm-user-badge {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 10px;
+  border-radius: var(--radius-card);
+  cursor: pointer;
+  transition: background var(--dur-fast);
+}
+
+.sm-user-badge:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.sm-user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.sm-user-name {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: #ffffff;
+}
+
+.sm-power-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-button);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  font-size: 16px;
+  cursor: pointer;
+  transition: background var(--dur-fast), color var(--dur-fast);
+}
+
+.sm-power-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}

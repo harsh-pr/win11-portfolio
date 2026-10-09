@@ -1,0 +1,251 @@
+/* Windows 11 Window Frame & Chrome */
+.win-window {
+  position: absolute;
+  min-width: 420px;
+  min-height: 280px;
+  background: var(--surface-window);
+  border: 1px solid var(--border-window);
+  border-radius: var(--radius-window);
+  box-shadow: var(--shadow-window);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  user-select: none;
+  animation: winOpenAnim 0.26s cubic-bezier(0.1, 0.9, 0.2, 1) both;
+  transition: box-shadow var(--dur-normal), border-color var(--dur-normal), filter var(--dur-normal);
+  transform-origin: center center;
+}
+
+/* 1. Spawn / Open Animation */
+@keyframes winOpenAnim {
+  0% {
+    opacity: 0;
+    transform: scale(0.92) translateY(16px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* 2. Window Closing Animation */
+@keyframes winCloseAnim {
+  0% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.92) translateY(12px);
+  }
+}
+
+.win-window.win-closing {
+  animation: winCloseAnim 0.18s cubic-bezier(0.7, 0, 0.84, 0) forwards !important;
+  pointer-events: none !important;
+}
+
+/* 3. Window Minimize Animation (Swoop down toward taskbar) */
+@keyframes winMinimizeAnim {
+  0% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    filter: blur(0px);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.68) translateY(100px);
+    filter: blur(3px);
+  }
+}
+
+.win-window.win-minimizing {
+  animation: winMinimizeAnim 0.22s cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
+  pointer-events: none !important;
+}
+
+/* 4. Window Restore Animation (Swoop up from taskbar) */
+@keyframes winRestoreAnim {
+  0% {
+    opacity: 0;
+    transform: scale(0.85) translateY(70px);
+    filter: blur(2px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    filter: blur(0px);
+  }
+}
+
+.win-window.win-restoring {
+  animation: winRestoreAnim 0.24s cubic-bezier(0.1, 0.9, 0.2, 1) forwards !important;
+}
+
+/* 5. Smooth Maximize / Restore Bounds Animation */
+.win-window.animating-bounds {
+  transition: top 0.26s cubic-bezier(0.1, 0.9, 0.2, 1),
+              left 0.26s cubic-bezier(0.1, 0.9, 0.2, 1),
+              width 0.26s cubic-bezier(0.1, 0.9, 0.2, 1),
+              height 0.26s cubic-bezier(0.1, 0.9, 0.2, 1),
+              border-radius 0.26s ease,
+              box-shadow 0.26s ease !important;
+}
+
+.win-window.focused {
+  box-shadow: var(--shadow-window-focus);
+  border-color: var(--border-window-focus);
+}
+
+.win-window:not(.focused) {
+  filter: brightness(0.94);
+}
+
+/* Maximized Window */
+.win-window.maximized {
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: calc(100vh - var(--taskbar-height)) !important;
+  border-radius: 0 !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Snapped Left Window */
+.win-window.snapped-left {
+  top: 0 !important;
+  left: 0 !important;
+  width: 50vw !important;
+  height: calc(100vh - var(--taskbar-height)) !important;
+  border-radius: 0 !important;
+}
+
+/* Snapped Right Window */
+.win-window.snapped-right {
+  top: 0 !important;
+  left: 50vw !important;
+  width: 50vw !important;
+  height: calc(100vh - var(--taskbar-height)) !important;
+  border-radius: 0 !important;
+}
+
+/* Window Title Bar */
+.win-titlebar {
+  height: var(--titlebar-height);
+  background: var(--surface-window);
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 0 0 12px;
+  cursor: default;
+  flex-shrink: 0;
+}
+
+.win-titlebar-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  height: 100%;
+}
+
+.win-app-icon {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+}
+
+.win-title {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.win-window.focused .win-title {
+  color: #ffffff;
+}
+
+/* Window Control Buttons (1:1 Windows 11 fluent icons) */
+.win-controls {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.win-ctrl-btn {
+  width: 46px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #cccccc;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  padding: 0;
+  transition: background var(--dur-fast), color var(--dur-fast);
+}
+
+.win-ctrl-btn svg {
+  width: 10px;
+  height: 10px;
+  display: block;
+}
+
+.win-ctrl-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+}
+
+.win-ctrl-btn.btn-close:hover {
+  background: #e81123 !important;
+  color: #ffffff !important;
+}
+
+.win-ctrl-btn.btn-close:active {
+  background: #bf101f !important;
+}
+
+/* Window Content */
+.win-content {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  background: var(--surface-window-alt);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Resize Handles */
+.resize-handle {
+  position: absolute;
+  z-index: 100;
+}
+
+.resize-n { top: 0; left: 8px; right: 8px; height: 6px; cursor: ns-resize; }
+.resize-s { bottom: 0; left: 8px; right: 8px; height: 6px; cursor: ns-resize; }
+.resize-e { right: 0; top: 8px; bottom: 8px; width: 6px; cursor: ew-resize; }
+.resize-w { left: 0; top: 8px; bottom: 8px; width: 6px; cursor: ew-resize; }
+
+.resize-ne { top: 0; right: 0; width: 12px; height: 12px; cursor: ne-resize; }
+.resize-nw { top: 0; left: 0; width: 12px; height: 12px; cursor: nw-resize; }
+.resize-se { bottom: 0; right: 0; width: 12px; height: 12px; cursor: se-resize; }
+.resize-sw { bottom: 0; left: 0; width: 12px; height: 12px; cursor: sw-resize; }
+
+/* Snap Overlay Ghost Box */
+#snap-ghost {
+  position: fixed;
+  background: rgba(0, 120, 212, 0.2);
+  border: 2px solid rgba(0, 120, 212, 0.6);
+  border-radius: var(--radius-window);
+  backdrop-filter: blur(8px);
+  pointer-events: none;
+  z-index: 45000;
+  display: none;
+  transition: all 0.14s ease-out;
+}

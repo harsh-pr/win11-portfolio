@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Harsh Prasad | Full-Stack & AI Engineer - Windows 11 Portfolio</title>
+  <meta name="description"
+    content="Interactive Windows 11-inspired portfolio of Harsh Prasad featuring embedded project previews, AI Gesture Controller, Attendance Tracker, and Task Manager skills.">
+  <link rel="icon" type="image/png" href="assets/icons/winlogo.png">
+
+  <!-- Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&display=swap"
+    rel="stylesheet">
+
+  <!-- Core Stylesheets -->
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/boot.css">
+  <link rel="stylesheet" href="css/desktop.css">
+  <link rel="stylesheet" href="css/taskbar.css">
+  <link rel="stylesheet" href="css/startmenu.css">
+  <link rel="stylesheet" href="css/windows.css">
+  <link rel="stylesheet" href="css/notification.css">
+
+  <!-- App Specific Stylesheets -->
+  <link rel="stylesheet" href="css/apps/explorer.css">
+  <link rel="stylesheet" href="css/apps/edge.css">
+  <link rel="stylesheet" href="css/apps/settings.css">
+  <link rel="stylesheet" href="css/apps/taskmanager.css">
+  <link rel="stylesheet" href="css/apps/mail.css">
+  <link rel="stylesheet" href="css/apps/terminal.css">
+  <link rel="stylesheet" href="css/apps/notepad.css">
+  <link rel="stylesheet" href="css/apps/codeviewer.css">
+  <link rel="stylesheet" href="css/apps/vscode.css">
+  <link rel="stylesheet" href="css/apps/store.css">
+</head>
+
+<body>
+
+  <!-- 1. Boot Screen -->
+  <div id="boot-screen">
+    <div class="boot-logo">
+      <svg viewBox="0 0 88 88" width="76" height="76">
+        <rect x="0" y="0" width="41" height="41" rx="2" fill="#0078D4" />
+        <rect x="47" y="0" width="41" height="41" rx="2" fill="#0078D4" />
+        <rect x="0" y="47" width="41" height="41" rx="2" fill="#0078D4" />
+        <rect x="47" y="47" width="41" height="41" rx="2" fill="#0078D4" />
+      </svg>
+    </div>
+    <div class="boot-loader">
+      <div class="dot-ring">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+    </div>
+    <div class="boot-skip-hint" id="boot-skip">Click to skip directly to Desktop ⚡</div>
+  </div>
+
+  <!-- 2. Windows 11 Lock & Sign-in Screen -->
+  <div id="lock-screen">
+    <!-- Smooth Acrylic Blur Filter Layer -->
+    <div class="lock-bg-acrylic" id="lock-bg-acrylic"></div>
+
+    <!-- Clock / Date Lock Screen View -->
+    <div class="lock-clock-view" id="lock-clock-view">
+      <div class="lock-info">
+        <div class="lock-time" id="lock-time"></div>
+        <div class="lock-date" id="lock-date"></div>
+        <script>
+          (function() {
+            try {
+              var now = new Date();
+              var is12 = (new Intl.DateTimeFormat([], { hour: 'numeric' }).resolvedOptions().hour12) ?? false;
+              var h = now.getHours();
+              var m = String(now.getMinutes()).padStart(2, '0');
+              var dh = is12 ? (h % 12 || 12) : String(h).padStart(2, '0');
+              var tEl = document.getElementById('lock-time');
+              var dEl = document.getElementById('lock-date');
+              if (tEl) tEl.textContent = dh + ':' + m;
+              if (dEl) dEl.textContent = now.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' });
+            } catch(e) {}
+          })();
+        </script>
+      </div>
+
+      <div class="lock-fullscreen-hint" id="lock-fullscreen-btn" title="Click to enter Fullscreen mode">
+        <span>⛶ Press F11 or click for best experience in Fullscreen</span>
+      </div>
+    </div>
+
+    <!-- Sign-in / Login View -->
+    <div class="lock-login-view" id="lock-login-view">
+      <div class="login-container">
+        <div class="login-avatar-wrapper">
+          <img src="assets/avatar.png" class="login-avatar" alt="Harsh Prasad" />
+        </div>
+        <div class="login-name">Harsh Prasad</div>
+        <div class="login-email">harshprasad1607@gmail.com</div>
+
+        <form class="login-form" id="login-form" onsubmit="event.preventDefault();">
+          <div class="login-input-wrapper" id="login-input-wrapper">
+            <input 
+              type="password" 
+              id="login-pin-input" 
+              class="login-pin-input" 
+              placeholder="PIN" 
+              autocomplete="off" 
+            />
+            <button type="submit" class="login-submit-btn" id="login-submit-btn" title="Sign In">
+              <svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor">
+                <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+              </svg>
+            </button>
+          </div>
+
+          <button type="button" class="login-forgot-pin" id="login-forgot-pin">
+            I forgot my PIN
+          </button>
+        </form>
+
+        <!-- Sign-in spinner state -->
+        <div class="login-loading" id="login-loading" style="display: none;">
+          <div class="login-ring-spinner">
+            <div class="dot-ring">
+              <div class="dot"></div>
+              <div class="dot"></div>
+              <div class="dot"></div>
+              <div class="dot"></div>
+              <div class="dot"></div>
+            </div>
+          </div>
+          <div class="login-welcome-text">Welcome</div>
+        </div>
+      </div>
+
+      <!-- Login Screen Corner Controls -->
+      <div class="login-tray">
+        <button class="login-tray-btn" title="Internet Access">
+          <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor">
+            <path d="M15.384 6.115a.485.485 0 0 0-.047-.736A12.444 12.444 0 0 0 8 3C5.259 3 2.723 3.882.663 5.379a.485.485 0 0 0-.048.736.518.518 0 0 0 .668.05A11.448 11.448 0 0 1 8 4c2.507 0 4.827.802 6.716 2.164.205.148.49.13.668-.049z"/>
+            <path d="M13.229 8.271a.482.482 0 0 0-.063-.745A9.455 9.455 0 0 0 8 6c-1.905 0-3.68.56-5.166 1.526a.48.48 0 0 0-.063.745.525.525 0 0 0 .652.065A8.46 8.46 0 0 1 8 7a8.46 8.46 0 0 1 4.577 1.336c.205.145.48.11.652-.065zm-2.183 2.183a.413.413 0 0 0-.061-.638A6.478 6.478 0 0 0 8 9c-1.305 0-2.516.392-3.535 1.066a.413.413 0 0 0-.061.638.54.54 0 0 0 .636.05A5.474 5.474 0 0 1 8 10c1.077 0 2.083.314 2.95.854a.54.54 0 0 0 .636-.05zM9 13a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+          </svg>
+        </button>
+        <button class="login-tray-btn" id="login-a11y-btn" title="Accessibility">
+          <img src="assets/icons/accessibility-white.png" alt="Accessibility" class="login-tray-icon" />
+        </button>
+        <button class="login-tray-btn" id="login-power-btn" title="Power Options">
+          <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor">
+            <path d="M7.5 1v7h1V1h-1z"/>
+            <path d="M3 8.812a4.999 4.999 0 0 1 2.578-4.375l-.448-.894A6 6 0 1 0 10.87 3.543l-.448.894A5 5 0 1 1 3 8.812z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Desktop Area -->
+  <div id="desktop" style="display:none;">
+    <!-- Desktop Icons Grid -->
+    <div id="desktop-icons">
+      <div class="desktop-icon" data-app="explorer">
+        <img src="assets/icons/explorer.png" alt="Projects" />
+        <span>My Projects</span>
+      </div>
+
+      <div class="desktop-icon" data-app="trash">
+        <img src="assets/icons/trash.png" alt="Recycle Bin" />
+        <span>Recycle Bin</span>
+      </div>
+
+      <div class="desktop-icon" data-app="settings">
+        <img src="assets/icons/settings.png" alt="About Project" />
+        <span>About Project</span>
+      </div>
+
+      <div class="desktop-icon" data-app="taskmanager">
+        <img src="assets/icons/taskmanager.png" alt="Skills" />
+        <span>Skills</span>
+      </div>
+
+      <div class="desktop-icon" data-app="mail">
+        <img src="assets/icons/mail.png" alt="Contact" />
+        <span>Contact</span>
+      </div>
+
+      <div class="desktop-icon" data-app="edge" data-url="https://attendance-tracker-harsh106.vercel.app">
+        <img src="assets/icons/edge.png" alt="Live Browser" />
+        <span>Edge Browser</span>
+      </div>
+
+      <div class="desktop-icon" data-app="terminal">
+        <img src="assets/icons/terminal.png" alt="Terminal" />
+        <span>Terminal</span>
+      </div>
+
+      <div class="desktop-icon" data-app="vscode">
+        <img src="assets/icons/vscode.png" alt="Visual Studio Code" />
+        <span>Visual Studio Code</span>
+      </div>
+
+      <div class="desktop-icon" data-app="notepad">
+        <img src="assets/icons/notepad.png" alt="Resume Overview" />
+        <span>Resume.txt</span>
+      </div>
+
+      <div class="desktop-icon" data-app="edge" data-url="https://github.com/harsh-pr">
+        <img src="assets/icons/github.png" alt="GitHub Profile" />
+        <span>GitHub</span>
+      </div>
+
+      <div class="desktop-icon" data-app="edge" data-url="https://www.linkedin.com/in/harshranjanprasad/">
+        <img src="assets/icons/linkedin.png" alt="LinkedIn Profile" />
+        <span>LinkedIn</span>
+      </div>
+    </div>
+
+    <!-- Selection Marquee Box -->
+    <div id="selection-box"></div>
+
+    <!-- Windows Drag & Drop Layer -->
+    <div id="windows-layer"></div>
+
+    <!-- Snap Ghost Preview -->
+    <div id="snap-ghost"></div>
+
+    <!-- Right-Click Context Menu -->
+    <div id="context-menu">
+      <ul>
+        <li data-action="refresh">
+          <span class="ctx-icon">🔄</span>
+          <span class="ctx-text">Refresh Desktop</span>
+        </li>
+        <li data-action="wallpaper">
+          <span class="ctx-icon">🖼️</span>
+          <span class="ctx-text">Next Wallpaper Theme</span>
+        </li>
+        <li class="divider"></li>
+        <li data-action="projects">
+          <span class="ctx-icon">📁</span>
+          <span class="ctx-text">Explore Projects</span>
+        </li>
+        <li data-action="terminal">
+          <span class="ctx-icon">>_</span>
+          <span class="ctx-text">Open Terminal</span>
+        </li>
+        <li class="divider"></li>
+        <li data-action="about">
+          <span class="ctx-icon">ℹ️</span>
+          <span class="ctx-text">System Specifications</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 4. Windows 11 Start Menu -->
+  <div id="start-menu">
+    <div class="sm-search-container">
+      <div class="sm-search-bar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="text" class="sm-search-input" id="sm-search-input"
+          placeholder="Type here to search apps, skills, or projects..." />
+      </div>
+    </div>
+
+    <div class="sm-body">
+      <!-- Pinned Apps -->
+      <div>
+        <div class="sm-section-header">
+          <span class="sm-section-title">Pinned</span>
+          <button class="sm-all-apps-btn">All apps ›</button>
+        </div>
+        <div class="sm-pinned-grid">
+          <div class="sm-app-item" data-app="explorer">
+            <img src="assets/icons/explorer.png" alt="Projects" />
+            <span>Projects</span>
+          </div>
+          <div class="sm-app-item" data-app="settings">
+            <img src="assets/icons/settings.png" alt="About Project" />
+            <span>About Project</span>
+          </div>
+          <div class="sm-app-item" data-app="taskmanager">
+            <img src="assets/icons/taskmanager.png" alt="Skills" />
+            <span>Skills</span>
+          </div>
+          <div class="sm-app-item" data-app="mail">
+            <img src="assets/icons/mail.png" alt="Contact" />
+            <span>Contact</span>
+          </div>
+          <div class="sm-app-item" data-app="edge" data-url="https://attendance-tracker-harsh106.vercel.app">
+            <img src="assets/icons/edge.png" alt="Browser" />
+            <span>Edge</span>
+          </div>
+          <div class="sm-app-item" data-app="terminal">
+            <img src="assets/icons/terminal.png" alt="Terminal" />
+            <span>Terminal</span>
+          </div>
+          <div class="sm-app-item" data-app="vscode">
+            <img src="assets/icons/vscode.png" alt="VS Code" />
+            <span>VS Code</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recommended Section -->
+      <div>
+        <div class="sm-section-header">
+          <span class="sm-section-title">Recommended</span>
+        </div>
+        <div class="sm-recommended-grid">
+          <div class="sm-rec-card" data-app="edge" data-url="demo/ai-gestures.html">
+            <img src="assets/icons/folder.png" alt="LazyGestures" />
+            <div class="sm-rec-info">
+              <span class="sm-rec-title">LazyGestures</span>
+              <span class="sm-rec-time">Python · OpenCV · MediaPipe</span>
+            </div>
+          </div>
+          <div class="sm-rec-card" data-app="edge" data-url="https://ai-splitwise-vpp.vercel.app/auth.html">
+            <img src="assets/icons/folder.png" alt="SplitwiseAI" />
+            <div class="sm-rec-info">
+              <span class="sm-rec-title">SplitwiseAI</span>
+              <span class="sm-rec-time">JavaScript · OCR & Expense Splitter</span>
+            </div>
+          </div>
+          <div class="sm-rec-card" data-app="edge" data-url="https://attendance-tracker-harsh106.vercel.app">
+            <img src="assets/icons/folder.png" alt="AttendanceManager" />
+            <div class="sm-rec-info">
+              <span class="sm-rec-title">AttendanceManager</span>
+              <span class="sm-rec-time">JavaScript · Live on Vercel</span>
+            </div>
+          </div>
+          <div class="sm-rec-card" data-app="notepad">
+            <img src="assets/icons/notepad.png" alt="Resume" />
+            <div class="sm-rec-info">
+              <span class="sm-rec-title">Harsh_Prasad_Resume.txt</span>
+              <span class="sm-rec-time">Ready for review</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Start Menu User Footer -->
+    <div class="sm-footer">
+      <div class="sm-user-badge">
+        <img src="assets/avatar.png" class="sm-user-avatar" alt="Harsh Prasad" />
+        <span class="sm-user-name">Harsh Prasad</span>
+      </div>
+      <button class="sm-power-btn" title="Power / Hire">⏻</button>
+    </div>
+  </div>
+
+  <!-- 5. Windows 11 Taskbar -->
+  <div id="taskbar">
+    <!-- Left: Empty or Widgets spacer -->
+    <div style="width: 140px; display: flex; align-items: center; gap: 8px;"></div>
+
+    <!-- Center: Centered Apps & Start (Screenshot 5 Match) -->
+    <div id="taskbar-center">
+      <div class="taskbar-item" id="taskbar-start" title="Start">
+        <img src="assets/icons/winlogo.png" alt="Start" style="width:24px;height:24px;object-fit:contain;" />
+      </div>
+
+      <!-- Taskbar Search Pill matching Screenshot 5 -->
+      <div id="taskbar-search" title="Search">
+        <div class="taskbar-search-left">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <span>Search</span>
+        </div>
+        <div class="taskbar-search-doodle" title="Windows Spotlight Daily Highlight">
+          🐻
+        </div>
+      </div>
+
+      <!-- Fixed Core Apps (Screenshot 5) -->
+      <div class="taskbar-item" data-app="explorer" title="File Explorer">
+        <img src="assets/icons/explorer.png" alt="File Explorer" />
+        <div class="taskbar-indicator"></div>
+      </div>
+
+      <div class="taskbar-item" data-app="edge" title="Microsoft Edge">
+        <img src="assets/icons/edge.png" alt="Microsoft Edge" />
+        <div class="taskbar-indicator"></div>
+      </div>
+
+      <div class="taskbar-item" data-app="store" title="Microsoft Store">
+        <img src="assets/icons/store.png" alt="Microsoft Store" />
+        <div class="taskbar-indicator"></div>
+      </div>
+
+      <!-- Dynamic Active / Open Apps -->
+      <div id="taskbar-dynamic-apps" style="display:flex; align-items:center; gap:4px;"></div>
+    </div>
+
+    <!-- Right: System Tray (1:1 Match with Screenshot 1) -->
+    <div id="taskbar-tray">
+      <!-- 1. Overflow Chevron Button (Screenshot 1 & 3) -->
+      <div class="tray-button" id="tray-overflow-btn" title="Show hidden icons">
+        <svg width="12" height="7" viewBox="0 0 10 6" fill="none" class="tray-overflow-chevron">
+          <path d="M1 5L5 1L9 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+
+      <!-- 2. Touch Keyboard Button (Screenshot 1) -->
+      <div class="tray-button" id="tray-keyboard-btn" title="Touch keyboard">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+          <rect x="1.5" y="4" width="15" height="10" rx="2" stroke="currentColor" stroke-width="1.3"/>
+          <rect x="3.5" y="6" width="1.8" height="1.8" rx="0.5" fill="currentColor"/>
+          <rect x="6.5" y="6" width="1.8" height="1.8" rx="0.5" fill="currentColor"/>
+          <rect x="9.5" y="6" width="1.8" height="1.8" rx="0.5" fill="currentColor"/>
+          <rect x="12.5" y="6" width="1.8" height="1.8" rx="0.5" fill="currentColor"/>
+          <rect x="4.5" y="9" width="1.8" height="1.8" rx="0.5" fill="currentColor"/>
+          <rect x="7.5" y="9" width="3" height="1.8" rx="0.5" fill="currentColor"/>
+          <rect x="11.5" y="9" width="1.8" height="1.8" rx="0.5" fill="currentColor"/>
+        </svg>
+      </div>
+
+      <!-- 3. Language Switcher (Screenshot 1 & 4) -->
+      <div class="tray-button" id="tray-lang-btn" title="English (India)&#10;Keyboard layout">
+        <div class="tray-lang-stack">
+          <span id="tray-lang-top">ENG</span>
+          <span id="tray-lang-bot">IN</span>
+        </div>
+      </div>
+
+      <!-- 4. Quick Settings Combined Pill: WiFi + Volume + Battery (Matching Screenshot 2) -->
+      <div class="tray-button" id="tray-quick-settings-btn" title="Quick settings&#10;Internet access, Sound, Battery (80%)">
+        <span class="tray-qs-icon" id="tray-icon-wifi">
+          <img src="assets/icons/wifi_command&amp;taskbar.png" alt="Wi-Fi" class="tray-img-icon wifi-img" />
+        </span>
+
+        <span class="tray-qs-icon" id="tray-icon-volume">
+          <img src="assets/icons/speaker_taskbar&amp;command.png" alt="Volume" class="tray-img-icon volume-img" />
+        </span>
+
+        <span class="tray-qs-icon" id="tray-icon-battery">
+          <img src="assets/icons/battery_taskbar&amp;command.png" alt="Battery" class="tray-img-icon battery-img" />
+        </span>
+      </div>
+
+      <!-- 5. Date & Time Button (Screenshot 1 & 5) -->
+      <div class="tray-button" id="tray-clock-btn" title="Date and time&#10;Calendar and notifications">
+        <span id="tray-time-text"></span>
+        <span id="tray-date-text"></span>
+        <script>
+          (function() {
+            try {
+              var now = new Date();
+              var t = document.getElementById('tray-time-text');
+              var d = document.getElementById('tray-date-text');
+              if (t) t.textContent = now.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+              if (d) d.textContent = now.toLocaleDateString();
+            } catch(e) {}
+          })();
+        </script>
+      </div>
+
+      <!-- 6. Show Desktop Sliver (Screenshot 1) -->
+      <div id="tray-peek" title="Show desktop"></div>
+    </div>
+  </div>
+
+  <!-- Screen Dimmer Overlay for Brightness slider -->
+  <div id="screen-brightness-overlay" style="position:fixed;inset:0;background:#000;pointer-events:none;z-index:99998;opacity:0;transition:opacity 0.1s;"></div>
+
+  <!-- WINDOWS 11 SYSTEM FLYOUTS (Screenshots 2, 3, 4, 5) -->
+
+  <!-- Flyout 1: Overflow Hidden Icons (Screenshot 3) -->
+  <div class="tray-flyout-window" id="flyout-overflow">
+    <div class="overflow-grid">
+      <div class="overflow-item" id="overflow-security" title="Windows Security">
+        <img src="assets/icons/win-security_systemtray.png" alt="Windows Security" class="overflow-img-icon" />
+      </div>
+      <div class="overflow-item" id="overflow-onedrive" title="OneDrive - Up to date">
+        <img src="assets/icons/onedrive_systemtray.png" alt="OneDrive" class="overflow-img-icon" />
+      </div>
+      <div class="overflow-item" id="overflow-bt" title="Bluetooth Devices">
+        <img src="assets/icons/bluetooth_systemtray.png" alt="Bluetooth" class="overflow-img-icon" />
+      </div>
+    </div>
+  </div>
+
+  <!-- Flyout 2: Language Switcher (Screenshot 4) -->
+  <div class="tray-flyout-window" id="flyout-language" style="width: 340px;">
+    <div class="lang-flyout-header">
+      <span>Keyboard layout</span>
+      <div class="lang-shortcut-hint">
+        <span class="win-key-badge">⊞</span> + Spacebar
+      </div>
+    </div>
+    <div class="lang-items-list">
+      <div class="lang-item active" data-lang-top="ENG" data-lang-bot="IN" data-title="English (India)">
+        <div class="lang-item-bar"></div>
+        <span class="lang-code-tag">ENG</span>
+        <div class="lang-text-col">
+          <span class="lang-title">English (India)</span>
+          <span class="lang-sub">English (India)</span>
+        </div>
+      </div>
+      <div class="lang-item" data-lang-top="ENG" data-lang-bot="US" data-title="English (United States)">
+        <div class="lang-item-bar"></div>
+        <span class="lang-code-tag">ENG</span>
+        <div class="lang-text-col">
+          <span class="lang-title">English (United States)</span>
+          <span class="lang-sub">English (India)</span>
+        </div>
+      </div>
+    </div>
+    <div class="lang-flyout-footer" id="btn-more-keyboard-settings">
+      <span>More keyboard settings</span>
+    </div>
+  </div>
+
+  <!-- Flyout 3: Quick Settings / Control Center (Screenshot 4) -->
+  <div class="tray-flyout-window" id="flyout-quick-settings" style="width: 360px;">
+    <!-- 6 Quick Action Tiles Grid -->
+    <div class="qs-tiles-container">
+      <div class="qs-tiles-grid">
+        <!-- Wi-Fi (Active) -->
+        <div class="qs-tile-wrapper">
+          <div class="qs-tile active" id="tile-wifi">
+            <div class="qs-tile-icon-area">
+              <img src="assets/icons/wifi_command&amp;taskbar.png" alt="Wi-Fi" class="qs-tile-img" />
+            </div>
+            <div class="qs-tile-chevron">›</div>
+          </div>
+          <span class="qs-tile-label">Harsh</span>
+        </div>
+
+        <!-- Bluetooth (Active) -->
+        <div class="qs-tile-wrapper">
+          <div class="qs-tile active" id="tile-bt">
+            <div class="qs-tile-icon-area">
+              <img src="assets/icons/bluetooth_command.png" alt="Bluetooth" class="qs-tile-img" />
+            </div>
+            <div class="qs-tile-chevron">›</div>
+          </div>
+          <span class="qs-tile-label">Connected (2)</span>
+        </div>
+
+        <!-- Airplane Mode -->
+        <div class="qs-tile-wrapper">
+          <div class="qs-tile" id="tile-airplane">
+            <div class="qs-tile-icon-area" style="width:100%;">
+              <img src="assets/icons/flight_command.png" alt="Airplane mode" class="qs-tile-img" />
+            </div>
+          </div>
+          <span class="qs-tile-label">Airplane mode</span>
+        </div>
+
+        <!-- Accessibility -->
+        <div class="qs-tile-wrapper">
+          <div class="qs-tile" id="tile-access">
+            <div class="qs-tile-icon-area">
+              <img src="assets/icons/accessibility_command.png" alt="Accessibility" class="qs-tile-img" />
+            </div>
+            <div class="qs-tile-chevron">›</div>
+          </div>
+          <span class="qs-tile-label">Accessibility</span>
+        </div>
+
+        <!-- Energy Saver -->
+        <div class="qs-tile-wrapper">
+          <div class="qs-tile" id="tile-saver">
+            <div class="qs-tile-icon-area" style="width:100%;">
+              <img src="assets/icons/saver_command.png" alt="Energy saver" class="qs-tile-img" />
+            </div>
+          </div>
+          <span class="qs-tile-label">Energy saver</span>
+        </div>
+
+        <!-- Live Captions -->
+        <div class="qs-tile-wrapper">
+          <div class="qs-tile" id="tile-captions">
+            <div class="qs-tile-icon-area" style="width:100%;">
+              <img src="assets/icons/caption_command.png" alt="Live captions" class="qs-tile-img" />
+            </div>
+          </div>
+          <span class="qs-tile-label">Live captions</span>
+        </div>
+      </div>
+
+      <!-- Carousel Column -->
+      <div class="qs-carousel-col">
+        <span class="qs-dot active"></span>
+        <span class="qs-dot"></span>
+        <span class="qs-dot-caret">⌄</span>
+      </div>
+    </div>
+
+    <!-- Sliders -->
+    <div class="qs-sliders-section">
+      <div class="qs-slider-row">
+        <img src="assets/icons/brightness_command.png" alt="Brightness" class="qs-slider-img" />
+        <input type="range" min="0" max="100" value="75" style="--fill-pct: 75%; --fill-pos: calc(8px + 0.75 * (100% - 16px));" class="win11-qs-slider" id="qs-bright-slider" title="Brightness" />
+        <div class="qs-audio-device-spacer" aria-hidden="true"></div>
+      </div>
+
+      <div class="qs-slider-row">
+        <img src="assets/icons/speaker_taskbar&amp;command.png" alt="Volume" class="qs-slider-img" id="qs-vol-icon-img" />
+        <input type="range" min="0" max="100" value="65" style="--fill-pct: 65%; --fill-pos: calc(8px + 0.65 * (100% - 16px));" class="win11-qs-slider" id="qs-vol-slider" title="Volume" />
+        <button class="qs-audio-device-btn" title="Select audio output device">
+          <img src="assets/icons/soundoutput_command.png" alt="Audio output" class="qs-audio-device-img" />
+        </button>
+      </div>
+    </div>
+
+    <!-- Footer Bar -->
+    <div class="qs-footer-bar">
+      <div class="qs-footer-battery" title="Battery status: 80% (Plugged in)">
+        <img src="assets/icons/battery_taskbar&amp;command.png" alt="Battery" class="qs-footer-battery-img" />
+      </div>
+      <div class="qs-footer-actions">
+        <button class="qs-settings-btn" id="qs-open-settings" title="All settings">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Flyout 4: Notification Center & ALL FUNCTIONAL Calendar (Screenshot 5) -->
+  <div class="tray-flyout-window" id="flyout-calendar-notifications">
+    <!-- Notifications Panel -->
+    <div class="notif-panel-card">
+      <div class="notif-panel-header">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span>Notifications</span>
+          <button class="notif-clear-all" id="notif-clear-all" style="display:none;" title="Clear all notifications">Clear all</button>
+        </div>
+        <button class="notif-focus-bell" title="Focus assist / Do not disturb">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+          </svg>
+        </button>
+      </div>
+      <div class="notif-panel-body" id="notif-panel-body">
+        <span class="notif-empty-text">No new notifications</span>
+      </div>
+    </div>
+
+    <!-- ALL FUNCTIONAL Calendar Card matching Screenshot 5 -->
+    <div class="calendar-card" id="calendar-widget">
+      <!-- Live Clock & Full Date Header -->
+      <div class="cal-header-section">
+        <div class="cal-clock-row">
+          <div class="cal-time-digits">
+            <span class="cal-time-large" id="cal-time-hms"></span>
+            <span class="cal-time-ampm" id="cal-time-ampm"></span>
+          </div>
+          <button class="cal-collapse-btn" id="cal-toggle-collapse" title="Collapse calendar">
+            <svg width="12" height="8" viewBox="0 0 12 8" fill="none">
+              <path d="M1.5 1.5L6 6L10.5 1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+        <div class="cal-date-text" id="cal-date-full"></div>
+      </div>
+
+      <!-- Collapsible Calendar View -->
+      <div class="cal-body-section" id="cal-collapsible-body">
+        <!-- Month Navigation Header -->
+        <div class="cal-month-nav">
+          <span class="cal-month-title" id="cal-nav-month-year"></span>
+          <div class="cal-nav-arrows">
+            <button class="cal-nav-btn" id="cal-nav-prev" title="Previous month">▲</button>
+            <button class="cal-nav-btn" id="cal-nav-next" title="Next month">▼</button>
+          </div>
+        </div>
+
+        <!-- Days of Week Header -->
+        <div class="cal-weekdays-row">
+          <span>Su</span>
+          <span>Mo</span>
+          <span>Tu</span>
+          <span>We</span>
+          <span>Th</span>
+          <span>Fr</span>
+          <span>Sa</span>
+        </div>
+
+        <!-- Interactive 6x7 Days Grid -->
+        <div class="cal-days-grid" id="cal-days-grid">
+          <!-- Rendered dynamically by CalendarEngine -->
+        </div>
+
+        <!-- Focus Session Control Bar matching Screenshot 5 -->
+        <div class="cal-focus-bar">
+          <div class="cal-focus-timer-ctrl">
+            <button class="cal-focus-stepper" id="focus-step-minus" title="Decrease duration">−</button>
+            <div class="cal-focus-duration">
+              <strong id="focus-mins-display">30</strong>
+              <span>mins</span>
+            </div>
+            <button class="cal-focus-stepper" id="focus-step-plus" title="Increase duration">+</button>
+          </div>
+          <button class="cal-focus-launch-btn" id="focus-launch-btn" title="Start Focus session">
+            <span class="focus-play-icon">▶</span>
+            <span id="focus-btn-label">Focus</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. Toast Notification Stack -->
+  <div id="notification-container"></div>
+
+  <!-- Application Logic Modules -->
+  <script src="js/notifications.js"></script>
+  <script src="js/boot.js"></script>
+  <script src="js/window-manager.js"></script>
+  <script src="js/desktop.js"></script>
+  <script src="js/taskbar.js"></script>
+  <script src="js/startmenu.js"></script>
+
+  <!-- Data Repositories -->
+  <script src="js/data/projects-data.js"></script>
+  <script src="js/data/real-code-db.js"></script>
+  <script src="js/data/recycle-bin-data.js"></script>
+
+  <!-- App Implementations -->
+  <script src="js/apps/vscode.js"></script>
+  <script src="js/apps/explorer.js"></script>
+  <script src="js/apps/edge.js"></script>
+  <script src="js/apps/settings.js"></script>
+  <script src="js/apps/taskmanager.js"></script>
+  <script src="js/apps/mail.js"></script>
+  <script src="js/apps/terminal.js"></script>
+  <script src="js/apps/notepad.js"></script>
+  <script src="js/apps/codeviewer.js"></script>
+  <script src="js/apps/store.js"></script>
+
+  <!-- Main Orchestrator -->
+  <script src="js/main.js"></script>
+</body>
+
+</html>

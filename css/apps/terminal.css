@@ -1,0 +1,73 @@
+/* Windows Terminal */
+.term-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #0c0c0c;
+  font-family: var(--font-mono);
+  color: #cccccc;
+}
+
+.term-tab-bar {
+  display: flex;
+  align-items: center;
+  background: #1f1f1f;
+  height: 32px;
+  padding: 0 8px;
+  gap: 4px;
+}
+
+.term-tab {
+  height: 28px;
+  background: #0c0c0c;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 10px;
+  border-radius: 4px 4px 0 0;
+  font-size: 11.5px;
+  color: #ffffff;
+}
+
+.term-body {
+  flex: 1;
+  padding: 14px;
+  overflow-y: auto;
+  font-size: 13px;
+  line-height: 1.5;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.term-prompt-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.term-prompt-path {
+  color: #60C1FF;
+}
+
+.term-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 13px;
+}
+
+.term-output {
+  color: #a0a0a0;
+  white-space: pre-wrap;
+}
+
+.term-output.success {
+  color: #00D26A;
+}
+
+.term-output.accent {
+  color: #60C1FF;
+}

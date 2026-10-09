@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Hand Gesture Controller - Live Simulator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Cascadia+Code&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #121316;
+      color: #e5e7eb;
+      font-family: 'Inter', system-ui, sans-serif;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      min-height: 100vh;
+    }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      padding-bottom: 16px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .brand-icon {
+      font-size: 32px;
+      background: rgba(0, 120, 212, 0.2);
+      border: 1px solid rgba(0, 120, 212, 0.4);
+      width: 52px; height: 52px;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .brand-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #ffffff;
+    }
+    .brand-sub {
+      font-size: 13px;
+      color: #9ca3af;
+    }
+    .btn-github {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #24292f;
+      color: #ffffff;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      text-decoration: none;
+      border: 1px solid rgba(255,255,255,0.15);
+      transition: background 0.15s;
+    }
+    .btn-github:hover {
+      background: #33383f;
+    }
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 20px;
+    }
+    @media (max-width: 800px) {
+      .main-grid { grid-template-columns: 1fr; }
+    }
+    .card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .card-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    /* Webcam Simulator */
+    .cam-box {
+      width: 100%;
+      height: 280px;
+      background: #08090b;
+      border-radius: 8px;
+      border: 1px solid rgba(0, 210, 106, 0.3);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .cam-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+    .cam-hud-badge {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: rgba(0, 210, 106, 0.18);
+      border: 1px solid rgba(0, 210, 106, 0.5);
+      color: #00D26A;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-family: 'Cascadia Code', monospace;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      z-index: 10;
+    }
+    .hud-dot {
+      width: 6px; height: 6px;
+      background: #00D26A;
+      border-radius: 50%;
+      animation: pulseDot 1.5s infinite;
+    }
+    @keyframes pulseDot {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 1; }
+    }
+    .cam-status {
+      position: absolute;
+      bottom: 12px;
+      left: 12px;
+      right: 12px;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(6px);
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-family: 'Cascadia Code', monospace;
+      color: #60C1FF;
+      display: flex;
+      justify-content: space-between;
+      z-index: 10;
+    }
+    /* Gesture Buttons */
+    .gestures-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .gesture-btn {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.15s ease;
+      color: #e5e7eb;
+    }
+    .gesture-btn:hover {
+      background: rgba(0, 120, 212, 0.2);
+      border-color: rgba(0, 120, 212, 0.5);
+      transform: translateY(-2px);
+    }
+    .gesture-btn.active {
+      background: rgba(0, 210, 106, 0.2);
+      border-color: #00D26A;
+    }
+    .gesture-btn-top {
+      font-weight: 600;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #ffffff;
+    }
+    .gesture-btn-sub {
+      font-size: 11px;
+      color: #9ca3af;
+    }
+    .gesture-btn-action {
+      font-size: 11px;
+      color: #60C1FF;
+      font-family: 'Cascadia Code', monospace;
+      margin-top: 4px;
+    }
+    /* Logs Console */
+    .log-box {
+      height: 120px;
+      background: #08090b;
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-family: 'Cascadia Code', monospace;
+      font-size: 11.5px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .log-entry { color: #9ca3af; }
+    .log-entry.active { color: #00D26A; }
+    .log-entry.accent { color: #60C1FF; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand">
+      <div class="brand-icon">🖐️</div>
+      <div>
+        <div class="brand-title">AI Hand Gesture Controller for Windows</div>
+        <div class="brand-sub">Webcam-based touchless gesture system by Harsh Prasad (@harsh-pr)</div>
+      </div>
+    </div>
+    <a href="https://github.com/harsh-pr/ai-gestures" target="_blank" class="btn-github">
+      <span>⭐ View Repository</span>
+      <span>↗</span>
+    </a>
+  </header>
+
+  <div class="main-grid">
+    <!-- Left Column: Camera Viewport Simulation -->
+    <div class="card">
+      <div class="card-title">
+        <span>👁️ Live Vision HUD (OpenCV & MediaPipe Engine)</span>
+      </div>
+
+      <div class="cam-box">
+        <div class="cam-hud-badge">
+          <span class="hud-dot"></span>
+          <span>CV ENGINE: 60 FPS</span>
+        </div>
+        <canvas class="cam-canvas" id="handCanvas" width="480" height="280"></canvas>
+        <div class="cam-status">
+          <span id="detectedGestureText">Pose: 🖐️ Open Palm (Neutral)</span>
+          <span id="detectedActionText">Key: Standby</span>
+        </div>
+      </div>
+
+      <div class="log-box" id="logBox">
+        <div class="log-entry accent">[INFO] MediaPipe Hands Model initialized successfully.</div>
+        <div class="log-entry">[INFO] Landmark detection tracking 21 3D coordinates.</div>
+        <div class="log-entry active">[READY] Click any gesture below to simulate touchless control!</div>
+      </div>
+    </div>
+
+    <!-- Right Column: Interactive Gesture Tester -->
+    <div class="card">
+      <div class="card-title">
+        <span>🎮 Interactive Gesture Triggers</span>
+      </div>
+      <p style="font-size:12.5px; color:#9ca3af; line-height:1.4;">
+        Test how the Python desktop utility translates hand coordinates into Windows keystrokes and scroll events:
+      </p>
+
+      <div class="gestures-list">
+        <button class="gesture-btn" onclick="triggerGesture('Next Reel / Page', '✌️ 2 Fingers Flick UP', 'Page Down / Down Arrow')">
+          <div class="gesture-btn-top">✌️ Next Reel / Page</div>
+          <div class="gesture-btn-sub">Index + Middle Flick UP</div>
+          <div class="gesture-btn-action">↳ Down Arrow / PgDn</div>
+        </button>
+
+        <button class="gesture-btn" onclick="triggerGesture('Prev Reel / Page', '☝️ 1 Finger Flick DOWN', 'Page Up / Up Arrow')">
+          <div class="gesture-btn-top">☝️ Prev Reel / Page</div>
+          <div class="gesture-btn-sub">Index Only Flick DOWN</div>
+          <div class="gesture-btn-action">↳ Up Arrow / PgUp</div>
+        </button>
+
+        <button class="gesture-btn" onclick="triggerGesture('Continuous Scroll', '🖐️ Open Palm Anchored', 'Mouse Wheel Delta ±120')">
+          <div class="gesture-btn-top">🖐️ Palm Scroll</div>
+          <div class="gesture-btn-sub">Move hand Up / Down</div>
+          <div class="gesture-btn-action">↳ Variable Wheel Scroll</div>
+        </button>
+
+        <button class="gesture-btn" onclick="triggerGesture('Zoom IN', '👍 Thumbs UP', 'Ctrl + KeyPlus')">
+          <div class="gesture-btn-top">👍 Zoom IN</div>
+          <div class="gesture-btn-sub">Thumb Up, 4 Curled</div>
+          <div class="gesture-btn-action">↳ Smooth Zoom In (+)</div>
+        </button>
+
+        <button class="gesture-btn" onclick="triggerGesture('Zoom OUT', '👎 Thumbs DOWN', 'Ctrl + KeyMinus')">
+          <div class="gesture-btn-top">👎 Zoom OUT</div>
+          <div class="gesture-btn-sub">Thumb Down, 4 Curled</div>
+          <div class="gesture-btn-action">↳ Smooth Zoom Out (-)</div>
+        </button>
+
+        <button class="gesture-btn" onclick="triggerGesture('Neutral Standby', '✋ Resting Hand', 'None')">
+          <div class="gesture-btn-top">✋ Idle State</div>
+          <div class="gesture-btn-sub">No action threshold</div>
+          <div class="gesture-btn-action">↳ 0% CPU consumption</div>
+        </button>
+      </div>
+
+      <div style="margin-top:auto; padding-top:12px; border-top:1px solid rgba(255,255,255,0.08); display:flex; justify-content:space-between; align-items:center;">
+        <span style="font-size:12px; color:#9ca3af;">All-in-One Dashboard (.bat)</span>
+        <a href="https://github.com/harsh-pr/ai-gestures" target="_blank" class="btn-github" style="padding:6px 12px; font-size:12px;">
+          Download from GitHub ↗
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('handCanvas');
+    const ctx = canvas.getContext('2d');
+    const poseText = document.getElementById('detectedGestureText');
+    const actionText = document.getElementById('detectedActionText');
+    const logBox = document.getElementById('logBox');
+
+    let currentPose = 'palm';
+
+    function addLog(msg, type = 'normal') {
+      const entry = document.createElement('div');
+      entry.className = `log-entry ${type}`;
+      entry.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
+      logBox.appendChild(entry);
+      logBox.scrollTop = logBox.scrollHeight;
+    }
+
+    function triggerGesture(name, pose, action) {
+      poseText.textContent = `Pose: ${pose}`;
+      actionText.textContent = `Key: ${action}`;
+
+      if (name.includes('Next')) currentPose = 'two_up';
+      else if (name.includes('Prev')) currentPose = 'one_up';
+      else if (name.includes('Zoom IN')) currentPose = 'thumb_up';
+      else if (name.includes('Zoom OUT')) currentPose = 'thumb_down';
+      else currentPose = 'palm';
+
+      addLog(`Dispatched gesture: ${name} -> ${action}`, 'active');
+    }
+
+    // Hand Landmark Drawing Simulation Loop
+    let angle = 0;
+    function renderHand() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      angle += 0.04;
+
+      const cx = canvas.width / 2 + Math.sin(angle) * 12;
+      const cy = canvas.height / 2 + Math.cos(angle) * 8;
+
+      // Draw subtle green camera grid
+      ctx.strokeStyle = 'rgba(0, 210, 106, 0.08)';
+      ctx.lineWidth = 1;
+      for (let x = 0; x < canvas.width; x += 40) {
+        ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke();
+      }
+      for (let y = 0; y < canvas.height; y += 40) {
+        ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke();
+      }
+
+      // Generate 21 Hand Landmarks
+      const nodes = [
+        { x: cx, y: cy + 60 }, // 0 Wrist
+        { x: cx - 35, y: cy + 40 }, { x: cx - 55, y: cy + 15 }, { x: cx - 65, y: cy - 10 }, { x: cx - 75, y: cy - 35 }, // 1-4 Thumb
+        { x: cx - 20, y: cy + 10 }, { x: cx - 25, y: cy - 30 }, { x: cx - 28, y: cy - 60 }, { x: cx - 30, y: cy - 90 }, // 5-8 Index
+        { x: cx, y: cy + 10 },      { x: cx, y: cy - 35 },      { x: cx, y: cy - 70 },      { x: cx, y: cy - 105 },     // 9-12 Middle
+        { x: cx + 20, y: cy + 15 }, { x: cx + 24, y: cy - 25 }, { x: cx + 27, y: cy - 55 }, { x: cx + 30, y: cy - 85 }, // 13-16 Ring
+        { x: cx + 40, y: cy + 25 }, { x: cx + 46, y: cy - 10 }, { x: cx + 50, y: cy - 35 }, { x: cx + 55, y: cy - 65 }  // 17-20 Pinky
+      ];
+
+      // Connections
+      const edges = [
+        [0,1],[1,2],[2,3],[3,4],
+        [0,5],[5,6],[6,7],[7,8],
+        [5,9],[9,10],[10,11],[11,12],
+        [9,13],[13,14],[14,15],[15,16],
+        [13,17],[17,18],[18,19],[19,20],[0,17]
+      ];
+
+      // Draw skeleton lines
+      ctx.strokeStyle = '#00D26A';
+      ctx.lineWidth = 2.5;
+      edges.forEach(([i, j]) => {
+        ctx.beginPath();
+        ctx.moveTo(nodes[i].x, nodes[i].y);
+        ctx.lineTo(nodes[j].x, nodes[j].y);
+        ctx.stroke();
+      });
+
+      // Draw landmark points
+      nodes.forEach((n, idx) => {
+        ctx.fillStyle = (idx === 4 || idx === 8 || idx === 12 || idx === 16 || idx === 20) ? '#60C1FF' : '#ffffff';
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, 4, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      requestAnimationFrame(renderHand);
+    }
+    renderHand();
+  </script>
+</body>
+</html>

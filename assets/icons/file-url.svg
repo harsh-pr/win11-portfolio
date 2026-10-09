@@ -1,0 +1,12 @@
+<svg viewBox="0 0 64 76" width="64" height="76" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M4 8C4 3.58172 7.58172 0 12 0H42L60 18V68C60 72.4183 56.4183 76 52 76H12C7.58172 76 4 72.4183 4 68V8Z" fill="#FFFFFF"/>
+  <path d="M42 0V14C42 16.2091 43.7909 18 46 18H60L42 0Z" fill="#D3D7DE"/>
+  <!-- Globe / Web / Edge -->
+  <circle cx="32" cy="44" r="14" fill="#0078D4"/>
+  <circle cx="32" cy="44" r="10" stroke="#FFFFFF" stroke-width="1.5" fill="none"/>
+  <path d="M22 44H42" stroke="#FFFFFF" stroke-width="1.5"/>
+  <path d="M32 34C34.5 37 36 40.5 36 44C36 47.5 34.5 51 32 54C29.5 51 28 47.5 28 44C28 40.5 29.5 37 32 34Z" stroke="#FFFFFF" stroke-width="1.5" fill="none"/>
+  <!-- Little shortcut arrow on bottom-left -->
+  <rect x="6" y="52" width="16" height="16" rx="3" fill="#FFFFFF"/>
+  <path d="M10 64V56H18M18 56L10 64" stroke="#0078D4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

@@ -1,0 +1,217 @@
+/* Desktop Area */
+#desktop {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  background: var(--wallpaper) center/cover no-repeat;
+  overflow: hidden;
+  z-index: 10;
+  transition: filter 0.3s ease;
+}
+
+#desktop.blur-mode {
+  filter: blur(10px) brightness(0.9);
+}
+
+/* Desktop Icons Container - Sized so 7 icons fit vertically in Column 1 */
+/* Desktop Icons Container - Absolute Draggable Positioning */
+#desktop-icons {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: calc(100vh - var(--taskbar-height));
+  pointer-events: none;
+  z-index: 20;
+  user-select: none;
+}
+
+.desktop-icon {
+  position: absolute;
+  pointer-events: auto;
+  width: 76px;
+  height: 84px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 5px 3px;
+  border-radius: 4px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: background 0.12s ease, border-color 0.12s ease;
+  user-select: none;
+  box-sizing: border-box;
+}
+
+.desktop-icon.dragging {
+  cursor: grabbing !important;
+  opacity: 0.85;
+  transition: none !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+.desktop-icon:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+/* Screenshot 1 & 2 Match: Thin, soft translucent border and background (no thick white outline or drop-shadow) */
+.desktop-icon.selected {
+  background: rgba(255, 255, 255, 0.16) !important;
+  border: 1px solid rgba(255, 255, 255, 0.28) !important;
+  box-shadow: none !important;
+}
+
+.desktop-icon.selected:hover {
+  background: rgba(255, 255, 255, 0.22) !important;
+  border-color: rgba(255, 255, 255, 0.35) !important;
+}
+
+/* User requirement: No bounce / scale animation */
+.desktop-icon:active {
+  transform: none !important;
+}
+
+.desktop-icon img {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
+  margin-bottom: 3px;
+  pointer-events: none;
+}
+
+.desktop-icon span {
+  font-size: 11.5px;
+  font-weight: 400;
+  color: #ffffff;
+  text-align: center;
+  line-height: 1.2;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.95), 0 0 3px rgba(0, 0, 0, 0.85);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  word-break: break-word;
+  max-width: 72px;
+  max-height: 28px;
+  pointer-events: none;
+}
+
+@media (max-height: 680px) {
+  #desktop-icons {
+    top: 6px;
+    left: 6px;
+    bottom: calc(var(--taskbar-height) + 4px);
+    grid-template-rows: repeat(auto-fill, 74px);
+    grid-auto-columns: 72px;
+    row-gap: 4px;
+    column-gap: 8px;
+  }
+  .desktop-icon {
+    width: 72px;
+    height: 74px;
+    padding: 3px 2px;
+  }
+  .desktop-icon img {
+    width: 38px;
+    height: 38px;
+  }
+  .desktop-icon span {
+    font-size: 10.5px;
+    max-height: 24px;
+  }
+}
+
+/* Desktop Marquee Selection Box */
+#selection-box {
+  position: absolute;
+  border: 1px solid rgba(0, 120, 212, 0.85);
+  background: rgba(0, 120, 212, 0.2);
+  pointer-events: none;
+  z-index: 100;
+  border-radius: 2px;
+  display: none;
+}
+
+/* Right-Click Context Menu */
+#context-menu {
+  position: fixed;
+  z-index: 99999;
+  width: 230px;
+  background: var(--surface-context);
+  backdrop-filter: var(--blur-popup);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  box-shadow: var(--shadow-popup);
+  padding: 6px;
+  display: none;
+  animation: contextIn 0.16s var(--ease-out);
+}
+
+@keyframes contextIn {
+  from { opacity: 0; transform: scale(0.96) translateY(-4px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+#context-menu ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+#context-menu li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 7px 10px;
+  border-radius: var(--radius-button);
+  font-size: 12.5px;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: background var(--dur-fast);
+}
+
+#context-menu li:hover {
+  background: var(--surface-hover);
+}
+
+#context-menu li .ctx-icon {
+  font-size: 14px;
+  width: 18px;
+  text-align: center;
+}
+
+#context-menu li .ctx-text {
+  flex: 1;
+}
+
+#context-menu li .ctx-arrow {
+  color: var(--text-tertiary);
+  font-size: 11px;
+}
+
+#context-menu .divider {
+  height: 1px;
+  background: var(--border-subtle);
+  margin: 4px 6px;
+  padding: 0;
+  pointer-events: none;
+}
+
+/* Layer for floating windows */
+#windows-layer {
+  position: absolute;
+  inset: 0;
+  bottom: var(--taskbar-height);
+  pointer-events: none;
+  z-index: 30;
+}
+
+#windows-layer > * {
+  pointer-events: auto;
+}

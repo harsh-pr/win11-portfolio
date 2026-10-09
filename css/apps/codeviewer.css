@@ -1,0 +1,214 @@
+/* Windows 11 Code Viewer Window */
+.code-window-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #111214;
+  color: #d4d4d4;
+  overflow: hidden;
+}
+
+.code-window-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px;
+  background: #18191c;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  font-family: 'Segoe UI', Inter, system-ui, sans-serif;
+  flex-shrink: 0;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.code-window-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.code-window-badge {
+  background: rgba(0, 120, 212, 0.25);
+  color: #60cdff;
+  border: 1px solid rgba(0, 120, 212, 0.4);
+  padding: 2px 7px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.code-window-path {
+  color: var(--text-secondary);
+  font-family: 'Cascadia Code', 'Consolas', monospace;
+  font-size: 11.5px;
+}
+
+.code-window-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.code-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 4px;
+  font-size: 11.5px;
+  color: var(--text-secondary);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.15s;
+  font-family: 'Segoe UI', Inter, system-ui, sans-serif;
+}
+
+.code-action-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+}
+
+.code-action-btn.active {
+  background: rgba(0, 120, 212, 0.3);
+  color: #ffffff;
+  border-color: var(--accent);
+}
+
+.code-action-btn.primary {
+  background: var(--accent);
+  color: #ffffff;
+  border-color: var(--accent);
+  font-weight: 500;
+}
+
+.code-action-btn.primary:hover {
+  background: var(--accent-light);
+}
+
+/* Code Body & Line Rendering (Flex layout - never distorts on wide screens) */
+.code-window-body {
+  flex: 1;
+  overflow: auto;
+  padding: 12px 0;
+  background: #111214;
+}
+
+.code-lines-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  font-family: 'Cascadia Code', 'Consolas', 'Courier New', monospace;
+  font-size: 13px;
+  line-height: 20px;
+}
+
+.code-line {
+  display: flex;
+  align-items: flex-start;
+  min-height: 20px;
+  width: 100%;
+}
+
+.code-line:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.line-num {
+  width: 52px;
+  min-width: 52px;
+  text-align: right;
+  padding-right: 16px;
+  color: #555c66;
+  user-select: none;
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.line-code {
+  flex: 1;
+  white-space: pre;
+  tab-size: 4;
+  color: #d4d4d4;
+  overflow-x: visible;
+  padding-right: 24px;
+}
+
+/* Syntax Highlighting Tokens */
+.tok-keyword { color: #569cd6; font-weight: 600; }
+.tok-string { color: #ce9178; }
+.tok-comment { color: #6a9955; font-style: italic; }
+.tok-func { color: #dcdcaa; }
+.tok-number { color: #b5cea8; }
+.tok-type { color: #4ec9b0; }
+
+/* Markdown Formatted View inside Window */
+.markdown-formatted-view {
+  padding: 24px 32px;
+  color: #e5e7eb;
+  line-height: 1.6;
+  font-family: 'Inter', system-ui, sans-serif;
+  max-width: 800px;
+}
+
+.markdown-formatted-view h1 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #ffffff;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 8px;
+  margin-bottom: 16px;
+}
+
+.markdown-formatted-view h2 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #ffffff;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.markdown-formatted-view p {
+  margin-bottom: 12px;
+  font-size: 13.5px;
+}
+
+.markdown-formatted-view ul {
+  padding-left: 20px;
+  margin-bottom: 16px;
+  font-size: 13.5px;
+}
+
+.markdown-formatted-view li {
+  margin-bottom: 6px;
+}
+
+.markdown-formatted-view code {
+  background: rgba(255, 255, 255, 0.08);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: 'Cascadia Code', monospace;
+  font-size: 12px;
+}
+
+.code-window-status {
+  height: 24px;
+  background: #18191c;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 14px;
+  font-size: 11px;
+  color: var(--text-tertiary);
+  font-family: 'Segoe UI', Inter, system-ui, sans-serif;
+  flex-shrink: 0;
+}
+
+.code-window-status-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
