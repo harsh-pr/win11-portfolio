@@ -313,7 +313,7 @@ const SettingsApp = {
           <div class="settings-bio-text" style="margin-top:8px;">
             <strong>Should you mention vibe-coding in a portfolio? Absolutely!</strong>
             <br/><br/>
-            "Vibe-coding" isn't about blind copy-pasting or accepting broken outputs. It is the art of acting as a software architect: defining crisp constraints, guiding modern UI design systems, asking for micro-animations, and having AI (Google Antigravity & Gemini) write high-precision code at lightning speed.
+            "Vibe-coding" isn't about blind copy-pasting or accepting broken outputs. It is the art of acting as a software architect: defining crisp constraints, guiding modern UI design systems, asking for micro-animations, and having AI write high-precision code at lightning speed.
             <br/><br/>
             Instead of spending two months on boilerplate CSS and window drag calculations, this entire OS was orchestrated and polished in record time with rigorous attention to detail.
           </div>
